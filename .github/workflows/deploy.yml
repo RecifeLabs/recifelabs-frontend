@@ -1,40 +1,28 @@
-name: Deploy Recife Labs - Produção 🚀
+name: Deploy Recife Labs - Estático 🚀
 
-# Gatilho: O deploy só ocorre após o Merge na branch main
 on:
   push:
     branches:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout do Código
         uses: actions/checkout@v4
 
-      - name: Setup Node.js (Ambiente de Build)
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Instalação e Build (Vite/React)
-        # O processamento pesado ocorre nos servidores do GitHub para poupar sua VM de 1GB
-        run: |
-          npm install
-          npm run build
-
-      - name: Deploy Seguro via Rsync (SSH)
+      - name: Deploy via Rsync para a VM Azure
         uses: Burnett01/rsync-deployments@7.0.0
         with:
-          # Sincroniza apenas a pasta 'dist' gerada pelo build
+          # Sincroniza todo o conteúdo do repositório para a pasta do Nginx
+          # Usamos '.' para indicar que queremos enviar os arquivos da raiz
           switches: -avzr --delete
-          path: dist/
+          path: .
           remote_path: /var/www/recifelabs_html/
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Notificação de Sucesso
-        run: echo "🚀 Recife Labs atualizada com sucesso em https://www.recifelabs.dev"
+          # Excluímos a pasta .git e o próprio workflow do deploy na VM
+          args: --exclude=.git* --exclude=.github*
