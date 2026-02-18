@@ -18,7 +18,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Instalação e Build (Vite/React)
         # O processamento pesado ocorre nos servidores do GitHub para poupar sua VM de 1GB
