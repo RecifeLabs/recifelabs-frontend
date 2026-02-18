@@ -1,21 +1,148 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <title>Recife Labs | Conectando Futuro e Tecnologia</title>
-    <meta name="description" content="Startup focada em conectar estudantes e empresas através de projetos práticos e IoT." />
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecifeLabs | Tech Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
+        
+        /* Ajuste do Vidro no Dark Mode */
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        /* Gradientes da Marca */
+        .tech-gradient { background: linear-gradient(135deg, #004A87 0%, #00B4D8 100%); }
+        .text-gradient { background: linear-gradient(to r, #00B4D8, #8CC63F); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Partículas Realçadas */
+        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none; }
+        
+        /* Cards com Glow em vez de Sombra */
+        .card-tech { 
+            background: rgba(30, 41, 59, 0.5); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        .card-tech:hover { 
+            border-color: #00B4D8;
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.2);
+            transform: translateY(-8px);
+        }
+        
+        .hero-content { position: relative; z-index: 10; }
+    </style>
+</head>
+<body class="selection:bg-[#8CC63F] selection:text-white">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    
-    <script type="module" src="/src/main.jsx"></script>
-    
-  </body>
+    <nav class="fixed w-full z-50 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-lg bg-[#004A87] flex items-center justify-center text-white font-bold shadow-[0_0_15px_rgba(0,74,135,0.5)]">RL</div>
+                    <span class="text-xl font-bold tracking-tight text-white">RECIFE<span class="text-[#8CC63F]">LABS</span></span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8 items-center text-xs font-semibold uppercase tracking-widest">
+                    <a href="#problema" class="text-slate-400 hover:text-[#00B4D8] transition">O Problema</a>
+                    <a href="#solucao" class="text-slate-400 hover:text-[#00B4D8] transition">A Solução</a>
+                    <a href="#cta" class="px-6 py-2.5 rounded-full tech-gradient text-white shadow-lg hover:brightness-110 transition">Entrar no Piloto</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="inicio" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <div id="particles-js"></div> <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center hero-content">
+            <div>
+                <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tighter">
+                    O mercado precisa de <br>desenvolvedores.<br />
+                    <span class="text-gradient">A gente pluga você.</span>
+                </h1>
+                <p class="text-xl text-slate-400 mb-10 leading-relaxed">
+                    Aprenda tecnologia contribuindo para projetos reais, com código público e Pull Requests aprovados no GitHub.
+                </p>
+                <a href="#cta" class="px-10 py-5 rounded-2xl tech-gradient text-white text-xl font-bold shadow-[0_10px_30px_rgba(0,180,216,0.3)] hover:scale-105 transition transform inline-block">Iniciar Jornada</a>
+            </div>
+
+            <div class="bg-slate-900/80 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] border border-slate-800 shadow-2xl">
+                <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-2">
+                    <span class="w-2 h-8 bg-[#8CC63F] rounded-full"></span>
+                    Participe do piloto
+                </h3>
+                <form class="space-y-4">
+                    <input type="text" placeholder="Seu nome" class="w-full px-5 py-4 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-[#00B4D8] outline-none transition" required />
+                    <input type="email" placeholder="seu@email.com" class="w-full px-5 py-4 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-[#00B4D8] outline-none transition" required />
+                    <select class="w-full px-5 py-4 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 focus:border-[#00B4D8] outline-none transition font-medium" required>
+                        <option value="">Seu perfil atual</option>
+                        <option>Estudante</option>
+                        <option>Iniciante em TI</option>
+                        <option>Dev em transição</option>
+                    </select>
+                    <button type="submit" class="w-full py-5 rounded-xl tech-gradient text-white font-bold text-lg hover:shadow-[0_0_20px_rgba(0,180,216,0.4)] transition">Garantir minha vaga</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="problema" class="py-24 px-4 bg-slate-950">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold mb-16 text-center text-white">O Problema</h2>
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="card-tech p-8 rounded-3xl">
+                    <div class="text-[#00B4D8] font-black text-4xl mb-4 opacity-20">01</div>
+                    <h3 class="text-lg font-bold mb-3 text-white">Cursos teóricos</h3>
+                    <p class="text-slate-400 text-sm">Muita teoria, pouca aplicação no mercado real.</p>
+                </div>
+                <div class="card-tech p-8 rounded-3xl">
+                    <div class="text-[#00B4D8] font-black text-4xl mb-4 opacity-20">02</div>
+                    <h3 class="text-lg font-bold mb-3 text-white">Barreira da exp.</h3>
+                    <p class="text-slate-400 text-sm">Empresas buscam quem já entregou código real.</p>
+                </div>
+                <div class="card-tech p-8 rounded-3xl">
+                    <div class="text-[#00B4D8] font-black text-4xl mb-4 opacity-20">03</div>
+                    <h3 class="text-lg font-bold mb-3 text-white">GitHub Vazio</h3>
+                    <p class="text-slate-400 text-sm">Portfólios sem PRs reais não geram confiança.</p>
+                </div>
+                <div class="card-tech p-8 rounded-3xl">
+                    <div class="text-[#00B4D8] font-black text-4xl mb-4 opacity-20">04</div>
+                    <h3 class="text-lg font-bold mb-3 text-white">Invisibilidade</h3>
+                    <p class="text-slate-400 text-sm">Talentos periféricos sem conexão com o mercado.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 bg-black border-t border-slate-900 text-center">
+        <p class="text-slate-500 text-xs font-bold tracking-[0.3em] uppercase">© 2026 RecifeLabs — Aprenda. Contribua. Prove. </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Configuração Particles High-Contrast
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#00B4D8" }, /* Ciano brilhante */
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#00B4D8",
+                    "opacity": 0.3,
+                    "width": 1.5 /* Linhas mais grossas */
+                },
+                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+                "modes": { "grab": { "distance": 200, "line_linked": { "opacity": 1 } } }
+            }
+        });
+    </script>
+</body>
 </html>
