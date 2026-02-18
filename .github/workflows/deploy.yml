@@ -16,13 +16,17 @@ jobs:
       - name: Deploy via Rsync para a VM Azure
         uses: Burnett01/rsync-deployments@7.0.0
         with:
-          # Sincroniza todo o conteúdo do repositório para a pasta do Nginx
-          # Usamos '.' para indicar que queremos enviar os arquivos da raiz
+          # Sincroniza todos os arquivos da raiz do repo para a pasta do Nginx
           switches: -avzr --delete
           path: .
           remote_path: /var/www/recifelabs_html/
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # Excluímos a pasta .git e o próprio workflow do deploy na VM
+          # Ignora a verificação manual de Host Key para automação
+          rsh: ssh -o StrictHostKeyChecking=no
+          # Evita enviar metadados do Git e do próprio workflow para a VM
           args: --exclude=.git* --exclude=.github*
+
+      - name: Notificação de Sucesso
+        run: echo "🚀 Deploy finalizado! Verifique em https://www.recifelabs.dev"
