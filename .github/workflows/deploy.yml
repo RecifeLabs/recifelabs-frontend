@@ -16,17 +16,17 @@ jobs:
       - name: Deploy via Rsync para a VM Azure
         uses: Burnett01/rsync-deployments@7.0.0
         with:
-          # Switches padrão para transferência recursiva e compressão
+          # Parâmetros para sincronização recursiva e compressão
           switches: -avzr --delete
           path: .
           remote_path: /var/www/recifelabs_html/
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # Ajuste no RSH: Removido o 'ssh' inicial para evitar erro de resolução
+          # Ignora a verificação manual de Host Key
           rsh: -o StrictHostKeyChecking=no
-          # Mantendo a exclusão de arquivos de sistema do Git
+          # Ignora pastas de controle do Git e do próprio Action
           args: --exclude=.git* --exclude=.github*
 
       - name: Notificação de Sucesso
-        run: echo "🚀 Deploy finalizado! Acesse https://www.recifelabs.dev"
+        run: echo "🚀 Deploy finalizado! Verifique em https://www.recifelabs.dev"
