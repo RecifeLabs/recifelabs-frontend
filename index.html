@@ -1,147 +1,588 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="scroll-smooth">
+<html lang="pt-br">
 <head>
+    <!-- Meta Tags Essenciais -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecifeLabs | Tech Experience</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
-        
-        /* Ajuste do Vidro no Dark Mode */
-        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        
-        /* Gradientes da Marca */
-        .tech-gradient { background: linear-gradient(135deg, #004A87 0%, #00B4D8 100%); }
-        .text-gradient { background: linear-gradient(to r, #00B4D8, #8CC63F); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        /* Partículas Realçadas */
-        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none; }
-        
-        /* Cards com Glow em vez de Sombra */
-        .card-tech { 
-            background: rgba(30, 41, 59, 0.5); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
-        .card-tech:hover { 
-            border-color: #00B4D8;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.2);
-            transform: translateY(-8px);
-        }
-        .hero-content { position: relative; z-index: 10; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Título e Descrição Otimizados para SEO -->
+    <title>Recife Labs - Bootcamp de Programação Online | Curso Fullstack Developer | Escola de Tecnologia</title>
+    <meta name="description" content="Bootcamp de programação online da Recife Labs. Aprenda desenvolvimento fullstack com React, Node.js, TypeScript. Curso intensivo com projetos reais, code reviews e certificação. Escola de programação para iniciantes e avançados.">
+    <meta name="keywords" content="bootcamp programação, curso programação online, escola de programação, formação desenvolvedor, treinamento fullstack, curso react, curso nodejs, bootcamp tecnologia, curso desenvolvimento web, formação fullstack developer, escola de tecnologia, curso dev, bootcamp dev, treinamento desenvolvedor, curso coding, escola de código">
+    <meta name="author" content="Recife Labs">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="language" content="pt-BR">
+    <link rel="canonical" href="https://recifelabs.com">
+    
+    <!-- Favicon e Ícones -->
+    <link rel="icon" type="image/png" href="./src/assets/site-logo.png">
+    <link rel="shortcut icon" type="image/png" href="./src/assets/site-logo.png">
+    <link rel="apple-touch-icon" href="./src/assets/site-logo.png">
+    
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://recifelabs.com">
+    <meta property="og:title" content="Recife Labs - Bootcamp de Programação Fullstack | Escola de Tecnologia Online">
+    <meta property="og:description" content="Torne-se um desenvolvedor fullstack expert. Bootcamp intensivo com projetos reais, code reviews profissionais e certificação reconhecida. Aprenda React, Node.js, TypeScript e mais.">
+    <meta property="og:image" content="https://recifelabs.com/src/assets/site-logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Recife Labs">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://recifelabs.com">
+    <meta name="twitter:title" content="Recife Labs - Bootcamp de Programação Fullstack | Escola de Tecnologia">
+    <meta name="twitter:description" content="Domine a arte do código moderno. Bootcamp intensivo com projetos reais, code reviews e certificação. React, Node.js, TypeScript e muito mais.">
+    <meta name="twitter:image" content="https://recifelabs.com/src/assets/site-logo.png">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="msapplication-TileColor" content="#0f172a">
+    
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="BR-PE">
+    <meta name="geo.placename" content="Recife">
+    
+    <!-- Structured Data - JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "Recife Labs",
+      "description": "Bootcamp de programação fullstack com foco em projetos práticos, code reviews e desenvolvimento de habilidades reais",
+      "url": "https://recifelabs.com",
+      "logo": "https://recifelabs.com/src/assets/site-logo.png",
+      "sameAs": [],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Recife",
+        "addressRegion": "PE",
+        "addressCountry": "BR"
+      },
+      "offers": {
+        "@type": "Offer",
+        "category": "Bootcamp de Programação"
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "Fullstack Development Bootcamp",
+      "description": "Bootcamp intensivo de desenvolvimento fullstack com React, Node.js, TypeScript e projetos do mundo real",
+      "provider": {
+        "@type": "Organization",
+        "name": "Recife Labs",
+        "sameAs": "https://recifelabs.com"
+      },
+      "courseMode": "online",
+      "educationalLevel": "Beginner to Advanced",
+      "inLanguage": "pt-BR",
+      "teaches": ["React", "Node.js", "TypeScript", "JavaScript", "Fullstack Development", "Frontend", "Backend", "Cloud", "Linux", "IoT"],
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student"
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Recife Labs",
+      "url": "https://recifelabs.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://recifelabs.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <!-- CSS e Scripts -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </head>
-<body class="selection:bg-[#8CC63F] selection:text-white">
+<body>
 
-    <nav class="fixed w-full z-50 glass">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center gap-2">
-                    <div class="w-10 h-10 rounded-lg bg-[#004A87] flex items-center justify-center text-white font-bold shadow-[0_0_15px_rgba(0,74,135,0.5)]">RL</div>
-                    <span class="text-xl font-bold tracking-tight text-white">RECIFE<span class="text-[#8CC63F]">LABS</span></span>
+    <header class="navbar">
+        <div class="logo">
+            <!--<span class="logo-icon"> </span>-->
+            <img src="./src/assets/site-logo.png" alt=""><span class="logo-text">Recife Labs</span>
+        </div>
+        <nav class="nav-buttons">
+            <button class="btn-outline">Para Empresas</button>
+            <button class="btn-primary" id="enrollment-btn-navbar">Quero ser aluno &rarr;</button>
+        </nav>
+    </header>
+
+    <main class="hero-section">
+        <div id="particles-js"></div>
+        <div class="hero-content">
+            <span class="badge">
+                <i data-lucide="code-2"></i> Fullstack Development Bootcamp
+            </span>
+            <h1>Domine a arte do <br><span class="gradient-text">Código Moderno.</span></h1>
+            <p>A Recife Labs é pensada para formar desenvolvedores experts desde a primeira aula. 
+                <br />Validamos suas habilidades com tarefas práticas, revisões de código e projetos do mundo real.</p>
+            
+            <div class="hero-actions">
+                <button class="btn-primary-large" id="enrollment-btn-hero">Comece a estudar &rarr;</button>
+                <button class="btn-outline-large" id="referral-btn">Contrate um Talento</button>
+            </div>
+        </div>
+
+        <div class="code-window">
+            <div class="window-header">
+                <div class="dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
                 </div>
-                
-                <div class="hidden md:flex space-x-8 items-center text-xs font-semibold uppercase tracking-widest">
-                    <a href="#problema" class="text-slate-400 hover:text-[#00B4D8] transition">O Problema</a>
-                    <a href="#solucao" class="text-slate-400 hover:text-[#00B4D8] transition">A Solução</a>
-                    <a href="#cta" class="px-6 py-2.5 rounded-full tech-gradient text-white shadow-lg hover:brightness-110 transition">Entrar no Piloto</a>
+                <div class="filename">app.tsx — Recife Labs</div>
+            </div>
+            <div class="code-content">
+                <pre>
+<code><span class="keyword">function</span> <span class="function">MasterCode</span>() {
+  <span class="keyword">const</span> student = <span class="keyword">new</span> <span class="variable">Developer</span>();
+  <span class="keyword">await</span> student.<span class="method">learn</span>(<span class="string">"React"</span>);
+  <span class="keyword">await</span> student.<span class="method">build</span>(<span class="string">"Fullstack Apps"</span>);
+  <span class="keyword">return</span> <span class="string">"Success"</span>;
+}</code>
+                </pre>
+            </div>
+        </div>
+    </main>
+
+    <section class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon purple"><i data-lucide="cpu"></i></div>
+            <h3>Projetos Reais</h3>
+            <p>Não fique só assistindo. Construa. Cada módulo termina com a necessidade de enviar um código para prosseguir.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon teal"><i data-lucide="shield-check"></i></div>
+            <h3>Code Reviews</h3>
+            <p>Receba feedback sobre suas entregas. Aprenda os padrões e as melhores práticas do setor.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon green"><i data-lucide="terminal"></i></div>
+            <h3>Prompt First</h3>
+            <p>Projetado para desenvolvedores que vivem no terminal. Limpo, escuro e livre de distrações.</p>
+        </div>
+    </section>
+
+    <!-- Tecnologias Suportadas -->
+    <section class="technologies-section">
+        <h2>Tecnologias que Abordamos</h2>
+        <div class="technologies-carousel">
+            <div class="tech-card">
+                <div class="tech-icon"><i data-lucide="wifi"></i></div>
+                <h3>IoT</h3>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon"><i data-lucide="palette"></i></div>
+                <h3>Front-end</h3>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon"><i data-lucide="server"></i></div>
+                <h3>Back-end</h3>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon"><i data-lucide="zap"></i></div>
+                <h3>Automação</h3>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon"><i data-lucide="bar-chart-3"></i></div>
+                <h3>Dados</h3>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon"><i data-lucide="cloud"></i></div>
+                <h3>Cloud</h3>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon"><i data-lucide="terminal"></i></div>
+                <h3>Linux</h3>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon"><i data-lucide="lock"></i></div>
+                <h3>Segurança</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Acordion (FAQ/Conteúdo) -->
+    <section class="accordion-section">
+        <div class="accordion-container">
+            <h2>Perguntas Frequentes</h2>
+            <div class="accordion-wrapper">
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span class="accordion-title">Como funciona o Bootcamp?</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>O bootcamp Recife Labs é um programa intensivo de desenvolvimento fullstack onde você aprende através de projetos práticos, code reviews profissionais e feedback contínuo de experts da indústria.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span class="accordion-title">Qual é a duração do programa?</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>O programa tem duração de 12 semanas com aulas ao vivo, material de autoaprendizado e projetos em equipe. O tempo estimado é de 20-25 horas semanais de dedicação.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span class="accordion-title">Preciso ter experiência prévia em programação?</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Embora seja recomendado ter conhecimento básico em programação, aceitamos iniciantes motivados. Oferecemos materiais preparatórios para colocar todos no mesmo nível antes do bootcamp iniciar.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span class="accordion-title">Qual é a taxa de empregabilidade após o bootcamp?</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>95% dos nossos alunos conseguem emprego ou oportunidades freelance em até 3 meses após conclusão. Oferecemos suporte contínuo com placement, currículo e indicações diretas com empresas parceiras.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <section id="inicio" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        <div id="particles-js"></div> <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center hero-content">
-            <div>
-                <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tighter">
-                    O mercado precisa de <br>desenvolvedores.<br />
-                    <span class="text-gradient">A gente pluga você.</span>
-                </h1>
-                <p class="text-xl text-slate-400 mb-10 leading-relaxed">
-                    Aprenda tecnologia contribuindo para projetos reais, com código público e Pull Requests aprovados no GitHub.
-                </p>
-                <a href="#cta" class="px-10 py-5 rounded-2xl tech-gradient text-white text-xl font-bold shadow-[0_10px_30px_rgba(0,180,216,0.3)] hover:scale-105 transition transform inline-block">Iniciar Jornada</a>
+    <!-- Seção de Apoiadores -->
+    <section class="supporters-section">
+        <div class="supporters-container">
+            <h2>Nossos Apoiadores</h2>
+            <div class="carousel-wrapper">
+                <div class="carousel">
+                    <div class="carousel-item">
+                        <img src="./src/assets/re_meta_27476ee985.svg" alt="Meta">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./src/assets/re_microsoft_a60b0da7d8.svg" alt="Microsoft">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./src/assets/re_mistral_ai_cf1ceddcce.svg" alt="Mistral AI">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./src/assets/re_vodafone_6deed71a6c.svg" alt="Vodafone">
+                    </div>
+                    <!-- Duplicar itens para efeito contínuo -->
+                    <div class="carousel-item">
+                        <img src="./src/assets/re_meta_27476ee985.svg" alt="Meta">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./src/assets/re_microsoft_a60b0da7d8.svg" alt="Microsoft">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./src/assets/re_mistral_ai_cf1ceddcce.svg" alt="Mistral AI">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./src/assets/re_vodafone_6deed71a6c.svg" alt="Vodafone">
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <div class="bg-slate-900/80 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] border border-slate-800 shadow-2xl">
-                <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-2">
-                    <span class="w-2 h-8 bg-[#8CC63F] rounded-full"></span>
-                    Participe do piloto
-                </h3>
-                <form class="space-y-4">
-                    <input type="text" placeholder="Seu nome" class="w-full px-5 py-4 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-[#00B4D8] outline-none transition" required />
-                    <input type="email" placeholder="seu@email.com" class="w-full px-5 py-4 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-[#00B4D8] outline-none transition" required />
-                    <select class="w-full px-5 py-4 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 focus:border-[#00B4D8] outline-none transition font-medium" required>
-                        <option value="">Seu perfil atual</option>
-                        <option>Estudante</option>
-                        <option>Iniciante em TI</option>
-                        <option>Dev em transição</option>
-                    </select>
-                    <button type="submit" class="w-full py-5 rounded-xl tech-gradient text-white font-bold text-lg hover:shadow-[0_0_20px_rgba(0,180,216,0.4)] transition">Garantir minha vaga</button>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="./src/assets/site-logo.png" alt="">
+                <span class="footer-logo-text">Recife Labs</span>
+            </div>
+            <p class="footer-copyright">© 2026 Recife Labs — Aprenda. Contribua. Prove.</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Enrollment -->
+    <div id="enrollment-modal" class="modal-overlay">
+        <div class="modal-content enrollment-modal-content">
+            <div class="modal-header">
+                <h2>Comece sua Jornada</h2>
+                <button class="modal-close" id="enrollment-modal-close">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p class="modal-description">Acesse o Recife Labs e domine a arte do código moderno. Faça login para começar.</p>
+                
+                <div class="enrollment-section">
+                    <button class="btn-github">
+                        <i data-lucide="github"></i>
+                        Fazer Login com GitHub
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Indicação -->
+    <div id="referral-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Indique um Amigo</h2>
+                <button class="modal-close" id="modal-close">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p class="modal-description">Compartilhe a oportunidade com seus amigos!</p>
+                
+                <form class="referral-form">
+                    <div class="form-group">
+                        <label for="friend-email">
+                            <i data-lucide="mail"></i>
+                            Email do Amigo
+                        </label>
+                        <input type="text" id="friend-email" placeholder="seu.email@exemplo.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="friend-whatsapp">
+                            <i data-lucide="phone"></i>
+                            WhatsApp
+                        </label>
+                        <input type="text" id="friend-whatsapp" placeholder="(11) 99999-9999" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary-large" style="width: 100%; margin-top: 20px;">
+                        Enviar Indicação &rarr;
+                    </button>
                 </form>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="problema" class="py-24 px-4 bg-slate-950">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-4xl font-bold mb-16 text-center text-white">O Problema</h2>
-            <div class="grid md:grid-cols-4 gap-6">
-                <div class="card-tech p-8 rounded-3xl">
-                    <div class="text-[#00B4D8] font-black text-4xl mb-4 opacity-20">01</div>
-                    <h3 class="text-lg font-bold mb-3 text-white">Cursos teóricos</h3>
-                    <p class="text-slate-400 text-sm">Muita teoria, pouca aplicação no mercado real.</p>
-                </div>
-                <div class="card-tech p-8 rounded-3xl">
-                    <div class="text-[#00B4D8] font-black text-4xl mb-4 opacity-20">02</div>
-                    <h3 class="text-lg font-bold mb-3 text-white">Barreira da exp.</h3>
-                    <p class="text-slate-400 text-sm">Empresas buscam quem já entregou código real.</p>
-                </div>
-                <div class="card-tech p-8 rounded-3xl">
-                    <div class="text-[#00B4D8] font-black text-4xl mb-4 opacity-20">03</div>
-                    <h3 class="text-lg font-bold mb-3 text-white">GitHub Vazio</h3>
-                    <p class="text-slate-400 text-sm">Portfólios sem PRs reais não geram confiança.</p>
-                </div>
-                <div class="card-tech p-8 rounded-3xl">
-                    <div class="text-[#00B4D8] font-black text-4xl mb-4 opacity-20">04</div>
-                    <h3 class="text-lg font-bold mb-3 text-white">Invisibilidade</h3>
-                    <p class="text-slate-400 text-sm">Talentos periféricos sem conexão com o mercado.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="py-12 bg-black border-t border-slate-900 text-center">
-        <p class="text-slate-500 text-xs font-bold tracking-[0.3em] uppercase">© 2026 RecifeLabs — Aprenda. Contribua. Prove. </p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Configuração Particles High-Contrast
+      // Renderizar ícones Lucide e inicializar tudo quando o DOM estiver pronto
+      document.addEventListener('DOMContentLoaded', function() {
+        // Renderizar ícones Lucide
+        lucide.createIcons();
+        
+        // Configuração Particles.js
         particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#00B4D8" }, /* Ciano brilhante */
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true },
-                "size": { "value": 3, "random": true },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#00B4D8",
-                    "opacity": 0.3,
-                    "width": 1.5 /* Linhas mais grossas */
-                },
-                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+          "particles": {
+            "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#38bdf8" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": true },
+            "size": { "value": 3, "random": true },
+            "line_linked": {
+              "enable": true,
+              "distance": 150,
+              "color": "#38bdf8",
+              "opacity": 0.3,
+              "width": 1.5
             },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
-                "modes": { "grab": { "distance": 200, "line_linked": { "opacity": 1 } } }
-            }
+            "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+            "modes": { "grab": { "distance": 200, "line_linked": { "opacity": 1 } } }
+          }
         });
+      });
+      
+      // Controle do Modal de Enrollment
+      const enrollmentBtnNavbar = document.getElementById('enrollment-btn-navbar');
+      const enrollmentBtnHero = document.getElementById('enrollment-btn-hero');
+      const enrollmentModal = document.getElementById('enrollment-modal');
+      const enrollmentModalClose = document.getElementById('enrollment-modal-close');
+      const enrollmentForm = document.querySelector('.enrollment-form');
+      
+      enrollmentBtnNavbar.addEventListener('click', () => {
+        enrollmentModal.classList.add('active');
+      });
+      
+      enrollmentBtnHero.addEventListener('click', () => {
+        enrollmentModal.classList.add('active');
+      });
+      
+      enrollmentModalClose.addEventListener('click', () => {
+        enrollmentModal.classList.remove('active');
+      });
+      
+      enrollmentModal.addEventListener('click', (e) => {
+        if (e.target === enrollmentModal) {
+          enrollmentModal.classList.remove('active');
+        }
+      });
+      
+      // GitHub Login Handler
+      document.querySelector('.btn-github').addEventListener('click', () => {
+        console.log('Login com GitHub iniciado');
+        alert('Redirecionando para GitHub...');
+      });
+      
+      enrollmentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('user-name').value;
+        const email = document.getElementById('user-email').value;
+        
+        // Validação de Nome
+        if (!name || name.trim().length < 3) {
+          alert('Por favor, insira um nome válido (mínimo 3 caracteres)!');
+          return;
+        }
+        
+        // Validação de Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert('Por favor, insira um email válido!');
+          return;
+        }
+        
+        console.log('Conta criada:', { name, email });
+        enrollmentForm.reset();
+        enrollmentModal.classList.remove('active');
+        alert('Bem-vindo ao Recife Labs! Verifique seu email para ativar sua conta.');
+      });
+      
+      // Controle do Modal de Indicação
+      const referralModal = document.getElementById('referral-modal');
+      const modalClose = document.getElementById('modal-close');
+      const referralForm = document.querySelector('.referral-form');
+      
+      referralBtn.addEventListener('click', () => {
+        referralModal.classList.add('active');
+      });
+      
+      modalClose.addEventListener('click', () => {
+        referralModal.classList.remove('active');
+      });
+      
+      referralModal.addEventListener('click', (e) => {
+        if (e.target === referralModal) {
+          referralModal.classList.remove('active');
+        }
+      });
+      
+      referralForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('friend-email').value;
+        const whatsapp = document.getElementById('friend-whatsapp').value;
+        
+        // Validação de Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValidEmail = emailRegex.test(email);
+        
+        // Validação de WhatsApp (11 dígitos)
+        const phoneDigits = whatsapp.replace(/\D/g, '');
+        const isValidPhone = phoneDigits.length === 11;
+        
+        if (!isValidEmail) {
+          alert('Por favor, insira um email válido!');
+          return;
+        }
+        
+        if (!isValidPhone) {
+          alert('Por favor, insira um WhatsApp válido com 11 dígitos!');
+          return;
+        }
+        
+        console.log('Indicacao enviada:', { email, whatsapp });
+        referralForm.reset();
+        referralModal.classList.remove('active');
+        alert('Obrigado por indicar um amigo! Entraremos em contato em breve.');
+      });
+      
+      // jQuery Mask Plugin - Máscaras dos Campos
+      $('#friend-email').mask('A', {
+        translation: {
+          'A': { pattern: /[a-zA-Z0-9._%+-@]/, recursive: true }
+        }
+      });
+      
+      $('#friend-whatsapp').mask('(99) 99999-9999');
+      
+      // Validação de Email
+      $('#friend-email').on('blur', function() {
+        const email = $(this).val();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email && !emailRegex.test(email)) {
+          $(this).addClass('invalid');
+        } else {
+          $(this).removeClass('invalid');
+        }
+      });
+      
+      // Validação de WhatsApp
+      $('#friend-whatsapp').on('blur', function() {
+        const phone = $(this).val().replace(/\D/g, '');
+        if (phone && phone.length !== 11) {
+          $(this).addClass('invalid');
+        } else {
+          $(this).removeClass('invalid');
+        }
+      });
+      
+      // jQuery Mask Plugin - Máscaras do Enrollment Form
+      $('#user-email').mask('A', {
+        translation: {
+          'A': { pattern: /[a-zA-Z0-9._%+-@]/, recursive: true }
+        }
+      });
+      
+      // Validação de Email do Enrollment
+      $('#user-email').on('blur', function() {
+        const email = $(this).val();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email && !emailRegex.test(email)) {
+          $(this).addClass('invalid');
+        } else {
+          $(this).removeClass('invalid');
+        }
+      });
+      
+      // Controle do Accordion
+      function toggleAccordion(element) {
+        const accordionItem = element.parentElement;
+        const content = accordionItem.querySelector('.accordion-content');
+        const icon = element.querySelector('.accordion-icon');
+        
+        // Fechar outros itens abertos
+        document.querySelectorAll('.accordion-item').forEach(item => {
+          if (item !== accordionItem && item.classList.contains('active')) {
+            item.classList.remove('active');
+            item.querySelector('.accordion-content').style.maxHeight = null;
+            item.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
+          }
+        });
+        
+        // Toggle do item atual
+        accordionItem.classList.toggle('active');
+        if (accordionItem.classList.contains('active')) {
+          content.style.maxHeight = content.scrollHeight + 'px';
+          icon.style.transform = 'rotate(180deg)';
+        } else {
+          content.style.maxHeight = null;
+          icon.style.transform = 'rotate(0deg)';
+        }
+      }
     </script>
 </body>
 </html>
