@@ -1,51 +1,56 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <!-- Meta Tags Essenciais -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
+
     <!-- Título e Descrição Otimizados para SEO -->
     <title>Recife Labs - Bootcamp de Programação Online | Curso Fullstack Developer | Escola de Tecnologia</title>
-    <meta name="description" content="Bootcamp de programação online da Recife Labs. Aprenda desenvolvimento fullstack com React, Node.js, TypeScript. Curso intensivo com projetos reais, code reviews e certificação. Escola de programação para iniciantes e avançados.">
-    <meta name="keywords" content="bootcamp programação, curso programação online, escola de programação, formação desenvolvedor, treinamento fullstack, curso react, curso nodejs, bootcamp tecnologia, curso desenvolvimento web, formação fullstack developer, escola de tecnologia, curso dev, bootcamp dev, treinamento desenvolvedor, curso coding, escola de código">
+    <meta name="description"
+        content="Bootcamp de programação online da Recife Labs. Aprenda desenvolvimento fullstack com React, Node.js, TypeScript. Curso intensivo com projetos reais, code reviews e certificação. Escola de programação para iniciantes e avançados.">
+    <meta name="keywords"
+        content="bootcamp programação, curso programação online, escola de programação, formação desenvolvedor, treinamento fullstack, curso react, curso nodejs, bootcamp tecnologia, curso desenvolvimento web, formação fullstack developer, escola de tecnologia, curso dev, bootcamp dev, treinamento desenvolvedor, curso coding, escola de código">
     <meta name="author" content="Recife Labs">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="language" content="pt-BR">
     <link rel="canonical" href="https://recifelabs.dev">
-    
+
     <!-- Favicon e Ícones -->
     <link rel="icon" type="image/png" href="./src/assets/site-logo.png">
     <link rel="shortcut icon" type="image/png" href="./src/assets/site-logo.png">
     <link rel="apple-touch-icon" href="./src/assets/site-logo.png">
-    
+
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://recifelabs.dev">
     <meta property="og:title" content="Recife Labs - Bootcamp de Programação Fullstack | Escola de Tecnologia Online">
-    <meta property="og:description" content="Torne-se um desenvolvedor fullstack expert. Bootcamp intensivo com projetos reais, code reviews profissionais e certificação reconhecida. Aprenda React, Node.js, TypeScript e mais.">
+    <meta property="og:description"
+        content="Torne-se um desenvolvedor fullstack expert. Bootcamp intensivo com projetos reais, code reviews profissionais e certificação reconhecida. Aprenda React, Node.js, TypeScript e mais.">
     <meta property="og:image" content="https://recifelabs.dev/src/assets/site-logo.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="Recife Labs">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://recifelabs.dev">
     <meta name="twitter:title" content="Recife Labs - Bootcamp de Programação Fullstack | Escola de Tecnologia">
-    <meta name="twitter:description" content="Domine a arte do código moderno. Bootcamp intensivo com projetos reais, code reviews e certificação. React, Node.js, TypeScript e muito mais.">
+    <meta name="twitter:description"
+        content="Domine a arte do código moderno. Bootcamp intensivo com projetos reais, code reviews e certificação. React, Node.js, TypeScript e muito mais.">
     <meta name="twitter:image" content="https://recifelabs.dev/src/assets/site-logo.png">
-    
+
     <!-- Theme Color -->
     <meta name="theme-color" content="#0f172a">
     <meta name="msapplication-TileColor" content="#0f172a">
-    
+
     <!-- Geo Tags -->
     <meta name="geo.region" content="BR-PE">
     <meta name="geo.placename" content="Recife">
-    
+
     <!-- Structured Data - JSON-LD -->
     <script type="application/ld+json">
     {
@@ -68,7 +73,7 @@
       }
     }
     </script>
-    
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -90,7 +95,7 @@
       }
     }
     </script>
-    
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -104,7 +109,7 @@
       }
     }
     </script>
-    
+
     <!-- CSS e Scripts -->
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -112,6 +117,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </head>
+
 <body>
 
     <header class="navbar">
@@ -124,7 +130,8 @@
             <span class="logo-text">Recife Labs</span>
         </div>
         <nav class="nav-buttons">
-            <button class="btn-primary" id="enrollment-btn-navbar">Alunos &rarr;</button>
+            <!-- Adicionar navegação para https://prototipo.recifelabs.dev-->
+            <button class="btn-outline-large" id="referral-btn">Login</button>
         </nav>
     </header>
 
@@ -135,12 +142,13 @@
                 <i data-lucide="code-2"></i> Fullstack Development Bootcamp
             </span>
             <h1>Domine a arte do <br><span class="gradient-text">Código Moderno.</span></h1>
-            <p>A Recife Labs é pensada para formar desenvolvedores experts desde a primeira aula. 
-                <br />Validamos suas habilidades com tarefas práticas, revisões de código e projetos do mundo real.</p>
-            
+            <p>A Recife Labs é pensada para formar desenvolvedores experts desde a primeira aula.
+                <br />Validamos suas habilidades com tarefas práticas, revisões de código e projetos do mundo real.
+            </p>
+
             <div class="hero-actions">
-                <button class="btn-primary-large" id="enrollment-btn-hero">Estudar &rarr;</button>
-                <button class="btn-outline-large" id="referral-btn">Contratar</button>
+                <!-- Acionar o modal de login -->
+                <button class="btn-outline-large" id="referral-btn">Comece sua Jornada &rarr;</button>
             </div>
         </div>
 
@@ -170,7 +178,8 @@
         <div class="feature-card">
             <div class="feature-icon purple"><i data-lucide="cpu"></i></div>
             <h3>Projetos Reais</h3>
-            <p>Não fique só assistindo. Construa. Cada módulo termina com a necessidade de enviar um código para prosseguir.</p>
+            <p>Não fique só assistindo. Construa. Cada módulo termina com a necessidade de enviar um código para
+                prosseguir.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon teal"><i data-lucide="shield-check"></i></div>
@@ -185,6 +194,166 @@
     </section>
 
     <!-- Tecnologias Suportadas -->
+    <!-- Sistema em Tempo Real -->
+    <section class="realtime-section">
+        <div class="realtime-container">
+            <div class="hero-content">
+                <h1>Um novo<br><span class="gradient-text">Protocolo</span></h1>
+                <p>Um sistema completo para transformar estudantes em desenvolvedores prontos para o mercado.</p>
+            </div>
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <i data-lucide="terminal" class="text-matrix"></i>
+                    <span class="terminal-title">recife-labs://telemetry</span>
+                    <div class="terminal-controls">
+                        <div class="control-dot red"></div>
+                        <div class="control-dot yellow"></div>
+                        <div class="control-dot green"></div>
+                    </div>
+                </div>
+                <div class="terminal-body" id="telemetry-terminal">
+                    <!-- Messages will be injected here by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nossos Protocolos -->
+     
+    <section class="protocols-section" id="protocol">
+        <div class="protocols-container">
+            <div class="protocols-list">
+                <div class="protocol-card">
+                    <div class="protocol-icon-wrapper">
+                        <div class="protocol-icon cobalt">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                    </div>
+                    <div class="protocol-content">
+                        <h3>Protocolo de Validação</h3>
+                        <p>Cada linha de código é rastreada e validada via GitHub. Commits, Pull Requests e
+                            contribuições viram experiência verificável.</p>
+                        <div class="protocol-tags">
+                            <span class="tag"><i data-lucide="check-circle"></i> 100% Rastreável</span>
+                            <span class="tag"><i data-lucide="github"></i> GitHub Integrado</span>
+                            <span class="tag"><i data-lucide="award"></i> Real Verificável</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="protocol-card matrix-theme">
+                    <div class="protocol-icon-wrapper">
+                        <div class="protocol-icon matrix">
+                            <i data-lucide="zap"></i>
+                        </div>
+                    </div>
+                    <div class="protocol-content">
+                        <h3>Protocolo de Imersão</h3>
+                        <p>Desafios reais de empresas parceiras, disponíveis 24/7. Aprenda resolvendo problemas que
+                            importam, no seu ritmo.</p>
+                        <div class="protocol-tags">
+                            <span class="tag"><i data-lucide="clock"></i> 24/7 Disponível</span>
+                            <span class="tag"><i data-lucide="briefcase"></i> Real Empresas</span>
+                            <span class="tag"><i data-lucide="target"></i> Seu Ritmo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="protocol-card">
+                    <div class="protocol-icon-wrapper">
+                        <div class="protocol-icon cobalt">
+                            <i data-lucide="trophy"></i>
+                        </div>
+                    </div>
+                    <div class="protocol-content">
+                        <h3>Protocolo de Gamificação</h3>
+                        <p>Sistema de XP, rankings e conquistas. Cada desafio completado te aproxima do próximo nível e
+                            de oportunidades reais.</p>
+                        <div class="protocol-tags">
+                            <span class="tag"><i data-lucide="star"></i> XP Sistema</span>
+                            <span class="tag"><i data-lucide="bar-chart-2"></i> Rank Global</span>
+                            <span class="tag"><i data-lucide="medal"></i> Elite Conquistas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ranking Elite -->
+    <section class="ranking-section" id="ranking">
+        <div class="ranking-container">
+            <div class="hero-content">
+                <h1>Ranking<br><span class="gradient-text">Elite</span></h1>
+                <p>Os desenvolvedores mais dedicados do mês. Cada desafio completado te aproxima do topo.</p>
+            </div>
+            <div class="ranking-list">
+                <div class="ranking-item top-1">
+                    <div class="top-badge"><i data-lucide="crown"></i> Top 1</div>
+                    <div class="ranking-info">
+                        <div class="rank-number">#1</div>
+                        <div class="rank-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop"
+                                alt="Ana Silva">
+                        </div>
+                        <div class="rank-details">
+                            <div class="rank-name">Ana Silva</div>
+                            <div class="rank-username">@ana_dev</div>
+                        </div>
+                    </div>
+                    <div class="rank-stats">
+                        <div class="stat-item"><i data-lucide="zap" class="text-matrix"></i> <span
+                                class="stat-value">15.420</span> <span class="stat-label">XP</span></div>
+                        <div class="stat-item"><i data-lucide="award" class="text-cobalt"></i> <span
+                                class="stat-value">12</span> <span class="stat-label">Badges</span></div>
+                        <div class="stat-item"><i data-lucide="folder" class="text-purple"></i> <span
+                                class="stat-value">8</span> <span class="stat-label">Projetos</span></div>
+                    </div>
+                </div>
+                <div class="ranking-item top-2">
+                    <div class="ranking-info">
+                        <div class="rank-number">#2</div>
+                        <div class="rank-avatar">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop"
+                                alt="Carlos Santos">
+                        </div>
+                        <div class="rank-details">
+                            <div class="rank-name">Carlos Santos</div>
+                            <div class="rank-username">@carlos_code</div>
+                        </div>
+                    </div>
+                    <div class="rank-stats">
+                        <div class="stat-item"><i data-lucide="zap" class="text-matrix"></i> <span
+                                class="stat-value">14.230</span> <span class="stat-label">XP</span></div>
+                        <div class="stat-item"><i data-lucide="award" class="text-cobalt"></i> <span
+                                class="stat-value">10</span> <span class="stat-label">Badges</span></div>
+                        <div class="stat-item"><i data-lucide="folder" class="text-purple"></i> <span
+                                class="stat-value">7</span> <span class="stat-label">Projetos</span></div>
+                    </div>
+                </div>
+                <div class="ranking-item top-3">
+                    <div class="ranking-info">
+                        <div class="rank-number">#3</div>
+                        <div class="rank-avatar">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop"
+                                alt="Julia Oliveira">
+                        </div>
+                        <div class="rank-details">
+                            <div class="rank-name">Julia Oliveira</div>
+                            <div class="rank-username">@julia_js</div>
+                        </div>
+                    </div>
+                    <div class="rank-stats">
+                        <div class="stat-item"><i data-lucide="zap" class="text-matrix"></i> <span
+                                class="stat-value">13.890</span> <span class="stat-label">XP</span></div>
+                        <div class="stat-item"><i data-lucide="award" class="text-cobalt"></i> <span
+                                class="stat-value">9</span> <span class="stat-label">Badges</span></div>
+                        <div class="stat-item"><i data-lucide="folder" class="text-purple"></i> <span
+                                class="stat-value">6</span> <span class="stat-label">Projetos</span></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Adicionar Botão para ver o ranking completo aqui -->
+        </div>
+    </section>
     <section class="technologies-section">
         <h2>Tecnologias que Abordamos</h2>
         <div class="technologies-carousel">
@@ -234,7 +403,9 @@
                         <i data-lucide="chevron-down" class="accordion-icon"></i>
                     </button>
                     <div class="accordion-content">
-                        <p>O bootcamp Recife Labs é um programa intensivo de desenvolvimento fullstack onde você aprende através de projetos práticos, code reviews profissionais e feedback contínuo de experts da indústria.</p>
+                        <p>O bootcamp Recife Labs é um programa intensivo de desenvolvimento fullstack onde você aprende
+                            através de projetos práticos, code reviews profissionais e feedback contínuo de experts da
+                            indústria.</p>
                     </div>
                 </div>
 
@@ -244,7 +415,8 @@
                         <i data-lucide="chevron-down" class="accordion-icon"></i>
                     </button>
                     <div class="accordion-content">
-                        <p>O programa tem duração de 12 semanas com aulas ao vivo, material de autoaprendizado e projetos em equipe. O tempo estimado é de 20-25 horas semanais de dedicação.</p>
+                        <p>O programa tem duração de 12 semanas com aulas ao vivo, material de autoaprendizado e
+                            projetos em equipe. O tempo estimado é de 20-25 horas semanais de dedicação.</p>
                     </div>
                 </div>
 
@@ -254,7 +426,9 @@
                         <i data-lucide="chevron-down" class="accordion-icon"></i>
                     </button>
                     <div class="accordion-content">
-                        <p>Embora seja recomendado ter conhecimento básico em programação, aceitamos iniciantes motivados. Oferecemos materiais preparatórios para colocar todos no mesmo nível antes do bootcamp iniciar.</p>
+                        <p>Embora seja recomendado ter conhecimento básico em programação, aceitamos iniciantes
+                            motivados. Oferecemos materiais preparatórios para colocar todos no mesmo nível antes do
+                            bootcamp iniciar.</p>
                     </div>
                 </div>
 
@@ -264,7 +438,9 @@
                         <i data-lucide="chevron-down" class="accordion-icon"></i>
                     </button>
                     <div class="accordion-content">
-                        <p>95% dos nossos alunos conseguem emprego ou oportunidades freelance em até 3 meses após conclusão. Oferecemos suporte contínuo com placement, currículo e indicações diretas com empresas parceiras.</p>
+                        <p>95% dos nossos alunos conseguem emprego ou oportunidades freelance em até 3 meses após
+                            conclusão. Oferecemos suporte contínuo com placement, currículo e indicações diretas com
+                            empresas parceiras.</p>
                     </div>
                 </div>
             </div>
@@ -327,10 +503,11 @@
                     <i data-lucide="x"></i>
                 </button>
             </div>
-            
+
             <div class="modal-body">
-                <p class="modal-description">Acesse o Recife Labs e domine a arte do código moderno. Faça login para começar.</p>
-                
+                <p class="modal-description">Acesse o Recife Labs e domine a arte do código moderno. Faça login para
+                    começar.</p>
+
                 <div class="enrollment-section">
                     <button class="btn-github">
                         <i data-lucide="github"></i>
@@ -350,10 +527,10 @@
                     <i data-lucide="x"></i>
                 </button>
             </div>
-            
+
             <div class="modal-body">
                 <p class="modal-description">Compartilhe a oportunidade com seus amigos!</p>
-                
+
                 <form class="referral-form">
                     <div class="form-group">
                         <label for="friend-email">
@@ -362,7 +539,7 @@
                         </label>
                         <input type="text" id="friend-email" placeholder="seu.email@exemplo.com" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="friend-whatsapp">
                             <i data-lucide="phone"></i>
@@ -370,7 +547,7 @@
                         </label>
                         <input type="text" id="friend-whatsapp" placeholder="(11) 99999-9999" required>
                     </div>
-                    
+
                     <button type="submit" class="btn-primary-large" style="width: 100%; margin-top: 20px;">
                         Enviar Indicação &rarr;
                     </button>
@@ -380,212 +557,214 @@
     </div>
 
     <script>
-      // Renderizar ícones Lucide e inicializar tudo quando o DOM estiver pronto
-      document.addEventListener('DOMContentLoaded', function() {
-        // Renderizar ícones Lucide
-        lucide.createIcons();
-        
-        // Configuração Particles.js
-        particlesJS("particles-js", {
-          "particles": {
-            "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-            "color": { "value": "#38bdf8" },
-            "shape": { "type": "circle" },
-            "opacity": { "value": 0.5, "random": true },
-            "size": { "value": 3, "random": true },
-            "line_linked": {
-              "enable": true,
-              "distance": 150,
-              "color": "#38bdf8",
-              "opacity": 0.3,
-              "width": 1.5
-            },
-            "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
-          },
-          "interactivity": {
-            "detect_on": "canvas",
-            "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
-            "modes": { "grab": { "distance": 200, "line_linked": { "opacity": 1 } } }
-          }
+        // Renderizar ícones Lucide e inicializar tudo quando o DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', function () {
+            // Renderizar ícones Lucide
+            lucide.createIcons();
+
+            // Configuração Particles.js
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#38bdf8" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#38bdf8",
+                        "opacity": 0.3,
+                        "width": 1.5
+                    },
+                    "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+                    "modes": { "grab": { "distance": 200, "line_linked": { "opacity": 1 } } }
+                }
+            });
         });
-      });
-      
-      // Controle do Modal de Enrollment
-      const enrollmentBtnNavbar = document.getElementById('enrollment-btn-navbar');
-      const enrollmentBtnHero = document.getElementById('enrollment-btn-hero');
-      const enrollmentModal = document.getElementById('enrollment-modal');
-      const enrollmentModalClose = document.getElementById('enrollment-modal-close');
-      const enrollmentForm = document.querySelector('.enrollment-form');
-      
-      enrollmentBtnNavbar.addEventListener('click', () => {
-        enrollmentModal.classList.add('active');
-      });
-      
-      enrollmentBtnHero.addEventListener('click', () => {
-        enrollmentModal.classList.add('active');
-      });
-      
-      enrollmentModalClose.addEventListener('click', () => {
-        enrollmentModal.classList.remove('active');
-      });
-      
-      enrollmentModal.addEventListener('click', (e) => {
-        if (e.target === enrollmentModal) {
-          enrollmentModal.classList.remove('active');
-        }
-      });
-      
-      // GitHub Login Handler
-      document.querySelector('.btn-github').addEventListener('click', () => {
-        console.log('Login com GitHub iniciado');
-        alert('Redirecionando para GitHub...');
-      });
-      
-      enrollmentForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('user-name').value;
-        const email = document.getElementById('user-email').value;
-        
-        // Validação de Nome
-        if (!name || name.trim().length < 3) {
-          alert('Por favor, insira um nome válido (mínimo 3 caracteres)!');
-          return;
-        }
-        
-        // Validação de Email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          alert('Por favor, insira um email válido!');
-          return;
-        }
-        
-        console.log('Conta criada:', { name, email });
-        enrollmentForm.reset();
-        enrollmentModal.classList.remove('active');
-        alert('Bem-vindo ao Recife Labs! Verifique seu email para ativar sua conta.');
-      });
-      
-      // Controle do Modal de Indicação
-      const referralModal = document.getElementById('referral-modal');
-      const modalClose = document.getElementById('modal-close');
-      const referralForm = document.querySelector('.referral-form');
-      
-      referralBtn.addEventListener('click', () => {
-        referralModal.classList.add('active');
-      });
-      
-      modalClose.addEventListener('click', () => {
-        referralModal.classList.remove('active');
-      });
-      
-      referralModal.addEventListener('click', (e) => {
-        if (e.target === referralModal) {
-          referralModal.classList.remove('active');
-        }
-      });
-      
-      referralForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('friend-email').value;
-        const whatsapp = document.getElementById('friend-whatsapp').value;
-        
-        // Validação de Email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const isValidEmail = emailRegex.test(email);
-        
-        // Validação de WhatsApp (11 dígitos)
-        const phoneDigits = whatsapp.replace(/\D/g, '');
-        const isValidPhone = phoneDigits.length === 11;
-        
-        if (!isValidEmail) {
-          alert('Por favor, insira um email válido!');
-          return;
-        }
-        
-        if (!isValidPhone) {
-          alert('Por favor, insira um WhatsApp válido com 11 dígitos!');
-          return;
-        }
-        
-        console.log('Indicacao enviada:', { email, whatsapp });
-        referralForm.reset();
-        referralModal.classList.remove('active');
-        alert('Obrigado por indicar um amigo! Entraremos em contato em breve.');
-      });
-      
-      // jQuery Mask Plugin - Máscaras dos Campos
-      $('#friend-email').mask('A', {
-        translation: {
-          'A': { pattern: /[a-zA-Z0-9._%+-@]/, recursive: true }
-        }
-      });
-      
-      $('#friend-whatsapp').mask('(99) 99999-9999');
-      
-      // Validação de Email
-      $('#friend-email').on('blur', function() {
-        const email = $(this).val();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (email && !emailRegex.test(email)) {
-          $(this).addClass('invalid');
-        } else {
-          $(this).removeClass('invalid');
-        }
-      });
-      
-      // Validação de WhatsApp
-      $('#friend-whatsapp').on('blur', function() {
-        const phone = $(this).val().replace(/\D/g, '');
-        if (phone && phone.length !== 11) {
-          $(this).addClass('invalid');
-        } else {
-          $(this).removeClass('invalid');
-        }
-      });
-      
-      // jQuery Mask Plugin - Máscaras do Enrollment Form
-      $('#user-email').mask('A', {
-        translation: {
-          'A': { pattern: /[a-zA-Z0-9._%+-@]/, recursive: true }
-        }
-      });
-      
-      // Validação de Email do Enrollment
-      $('#user-email').on('blur', function() {
-        const email = $(this).val();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (email && !emailRegex.test(email)) {
-          $(this).addClass('invalid');
-        } else {
-          $(this).removeClass('invalid');
-        }
-      });
-      
-      // Controle do Accordion
-      function toggleAccordion(element) {
-        const accordionItem = element.parentElement;
-        const content = accordionItem.querySelector('.accordion-content');
-        const icon = element.querySelector('.accordion-icon');
-        
-        // Fechar outros itens abertos
-        document.querySelectorAll('.accordion-item').forEach(item => {
-          if (item !== accordionItem && item.classList.contains('active')) {
-            item.classList.remove('active');
-            item.querySelector('.accordion-content').style.maxHeight = null;
-            item.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
-          }
+
+        // Controle do Modal de Enrollment
+        const enrollmentBtnNavbar = document.getElementById('enrollment-btn-navbar');
+        const enrollmentBtnHero = document.getElementById('enrollment-btn-hero');
+        const enrollmentModal = document.getElementById('enrollment-modal');
+        const enrollmentModalClose = document.getElementById('enrollment-modal-close');
+        const enrollmentForm = document.querySelector('.enrollment-form');
+
+        enrollmentBtnNavbar.addEventListener('click', () => {
+            enrollmentModal.classList.add('active');
         });
-        
-        // Toggle do item atual
-        accordionItem.classList.toggle('active');
-        if (accordionItem.classList.contains('active')) {
-          content.style.maxHeight = content.scrollHeight + 'px';
-          icon.style.transform = 'rotate(180deg)';
-        } else {
-          content.style.maxHeight = null;
-          icon.style.transform = 'rotate(0deg)';
+
+        enrollmentBtnHero.addEventListener('click', () => {
+            enrollmentModal.classList.add('active');
+        });
+
+        enrollmentModalClose.addEventListener('click', () => {
+            enrollmentModal.classList.remove('active');
+        });
+
+        enrollmentModal.addEventListener('click', (e) => {
+            if (e.target === enrollmentModal) {
+                enrollmentModal.classList.remove('active');
+            }
+        });
+
+        // GitHub Login Handler
+        document.querySelector('.btn-github').addEventListener('click', () => {
+            console.log('Login com GitHub iniciado');
+            alert('Redirecionando para GitHub...');
+        });
+
+        enrollmentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('user-name').value;
+            const email = document.getElementById('user-email').value;
+
+            // Validação de Nome
+            if (!name || name.trim().length < 3) {
+                alert('Por favor, insira um nome válido (mínimo 3 caracteres)!');
+                return;
+            }
+
+            // Validação de Email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Por favor, insira um email válido!');
+                return;
+            }
+
+            console.log('Conta criada:', { name, email });
+            enrollmentForm.reset();
+            enrollmentModal.classList.remove('active');
+            alert('Bem-vindo ao Recife Labs! Verifique seu email para ativar sua conta.');
+        });
+
+        // Controle do Modal de Indicação
+        const referralModal = document.getElementById('referral-modal');
+        const modalClose = document.getElementById('modal-close');
+        const referralForm = document.querySelector('.referral-form');
+
+        referralBtn.addEventListener('click', () => {
+            referralModal.classList.add('active');
+        });
+
+        modalClose.addEventListener('click', () => {
+            referralModal.classList.remove('active');
+        });
+
+        referralModal.addEventListener('click', (e) => {
+            if (e.target === referralModal) {
+                referralModal.classList.remove('active');
+            }
+        });
+
+        referralForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('friend-email').value;
+            const whatsapp = document.getElementById('friend-whatsapp').value;
+
+            // Validação de Email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const isValidEmail = emailRegex.test(email);
+
+            // Validação de WhatsApp (11 dígitos)
+            const phoneDigits = whatsapp.replace(/\D/g, '');
+            const isValidPhone = phoneDigits.length === 11;
+
+            if (!isValidEmail) {
+                alert('Por favor, insira um email válido!');
+                return;
+            }
+
+            if (!isValidPhone) {
+                alert('Por favor, insira um WhatsApp válido com 11 dígitos!');
+                return;
+            }
+
+            console.log('Indicacao enviada:', { email, whatsapp });
+            referralForm.reset();
+            referralModal.classList.remove('active');
+            alert('Obrigado por indicar um amigo! Entraremos em contato em breve.');
+        });
+
+        // jQuery Mask Plugin - Máscaras dos Campos
+        $('#friend-email').mask('A', {
+            translation: {
+                'A': { pattern: /[a-zA-Z0-9._%+-@]/, recursive: true }
+            }
+        });
+
+        $('#friend-whatsapp').mask('(99) 99999-9999');
+
+        // Validação de Email
+        $('#friend-email').on('blur', function () {
+            const email = $(this).val();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email && !emailRegex.test(email)) {
+                $(this).addClass('invalid');
+            } else {
+                $(this).removeClass('invalid');
+            }
+        });
+
+        // Validação de WhatsApp
+        $('#friend-whatsapp').on('blur', function () {
+            const phone = $(this).val().replace(/\D/g, '');
+            if (phone && phone.length !== 11) {
+                $(this).addClass('invalid');
+            } else {
+                $(this).removeClass('invalid');
+            }
+        });
+
+        // jQuery Mask Plugin - Máscaras do Enrollment Form
+        $('#user-email').mask('A', {
+            translation: {
+                'A': { pattern: /[a-zA-Z0-9._%+-@]/, recursive: true }
+            }
+        });
+
+        // Validação de Email do Enrollment
+        $('#user-email').on('blur', function () {
+            const email = $(this).val();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email && !emailRegex.test(email)) {
+                $(this).addClass('invalid');
+            } else {
+                $(this).removeClass('invalid');
+            }
+        });
+
+        // Controle do Accordion
+        function toggleAccordion(element) {
+            const accordionItem = element.parentElement;
+            const content = accordionItem.querySelector('.accordion-content');
+            const icon = element.querySelector('.accordion-icon');
+
+            // Fechar outros itens abertos
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                if (item !== accordionItem && item.classList.contains('active')) {
+                    item.classList.remove('active');
+                    item.querySelector('.accordion-content').style.maxHeight = null;
+                    item.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
+                }
+            });
+
+            // Toggle do item atual
+            accordionItem.classList.toggle('active');
+            if (accordionItem.classList.contains('active')) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.style.maxHeight = null;
+                icon.style.transform = 'rotate(0deg)';
+            }
         }
-      }
     </script>
+    <script src="terminal_script.js"></script>
 </body>
+
 </html>
