@@ -234,9 +234,9 @@
                         <p>Cada linha de código é rastreada e validada via GitHub. Commits, Pull Requests e
                             contribuições viram experiência verificável.</p>
                         <div class="protocol-tags">
-                            <span class="tag"><i data-lucide="check-circle"></i> 100% Rastreável</span>
+                            <span class="tag"><i data-lucide="check-circle"></i> Entrega Real</span>
                             <span class="tag"><i data-lucide="github"></i> GitHub Integrado</span>
-                            <span class="tag"><i data-lucide="award"></i> Real Verificável</span>
+                            <span class="tag"><i data-lucide="award"></i> Conquista Verificável</span>
                         </div>
                     </div>
                 </div>
@@ -252,8 +252,8 @@
                             importam, no seu ritmo.</p>
                         <div class="protocol-tags">
                             <span class="tag"><i data-lucide="clock"></i> 24/7 Disponível</span>
-                            <span class="tag"><i data-lucide="briefcase"></i> Real Empresas</span>
-                            <span class="tag"><i data-lucide="target"></i> Seu Ritmo</span>
+                            <span class="tag"><i data-lucide="briefcase"></i> Empresas Reais</span>
+                            <span class="tag"><i data-lucide="target"></i> Foco no Problema</span>
                         </div>
                     </div>
                 </div>
@@ -265,12 +265,12 @@
                     </div>
                     <div class="protocol-content">
                         <h3>Protocolo de Gamificação</h3>
-                        <p>Sistema de XP, rankings e conquistas. Cada desafio completado te aproxima do próximo nível e
+                        <p>Sistema de Pontuação, Rankings e Conquistas. Cada commit te aproxima do próximo nível e
                             de oportunidades reais.</p>
                         <div class="protocol-tags">
-                            <span class="tag"><i data-lucide="star"></i> XP Sistema</span>
+                            <span class="tag"><i data-lucide="star"></i> XP por PR's aprovados</span>
                             <span class="tag"><i data-lucide="bar-chart-2"></i> Rank Global</span>
-                            <span class="tag"><i data-lucide="medal"></i> Elite Conquistas</span>
+                            <span class="tag"><i data-lucide="medal"></i> Conquistas Reais</span>
                         </div>
                     </div>
                 </div>
@@ -399,13 +399,12 @@
             <div class="accordion-wrapper">
                 <div class="accordion-item">
                     <button class="accordion-header" onclick="toggleAccordion(this)">
-                        <span class="accordion-title">Como funciona o Bootcamp?</span>
+                        <span class="accordion-title">A Recife Labs é uma escola?</span>
                         <i data-lucide="chevron-down" class="accordion-icon"></i>
                     </button>
                     <div class="accordion-content">
-                        <p>O bootcamp Recife Labs é um programa intensivo de desenvolvimento fullstack onde você aprende
-                            através de projetos práticos, code reviews profissionais e feedback contínuo de experts da
-                            indústria.</p>
+                        <p>Somos muito mais do que uma escola; Criamos um protocolo de soberania tecnológica. 
+                            <br> A <b>Recife Labs</b>, está propondo uma ponte direta entre o déficit de talentos e a barreira da "experiência comprovada", transformando o aprendizado em uma linha de produção de software real.</p>
                     </div>
                 </div>
 
@@ -490,9 +489,40 @@
                 <img src="./src/assets/site-logo.png" alt="">
                 <span class="footer-logo-text">Recife Labs</span>
             </div>
+            <button class="btn-outline-large" id="manifest-btn" style="width: 100%; max-width: 400px; margin: 20px 0;">Ler o Manifesto</button>
             <p class="footer-copyright">© 2026 Recife Labs — Aprenda. Contribua. Prove.</p>
         </div>
     </footer>
+
+    <!-- Modal do Manifesto -->
+    <div id="manifest-modal" class="modal-overlay">
+        <div class="modal-content manifest-modal-content">
+            <button class="manifest-close-btn" id="manifest-modal-close">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="manifest-container">
+                <div class="manifest-content">
+                    <h1>O Manifesto Recife Labs</h1>
+                    <p>Acreditamos que a educação tecnológica no Brasil precisa de uma revolução. Não basta apenas assistir a vídeos; é preciso construir, errar, corrigir e evoluir.</p>
+                    
+                    <h2>1. Código que Resolve Problemas Reais</h2>
+                    <p>Chega de projetos de prateleira. Nossos estudantes enfrentam desafios reais de empresas parceiras, desenvolvendo soluções que impactam o mercado desde o primeiro dia.</p>
+                    
+                    <h2>2. Validação Incontestável</h2>
+                    <p>Seu portfólio é o seu currículo. Cada linha de código é rastreada e validada via GitHub. Commits, Pull Requests e contribuições open-source são a verdadeira prova de experiência.</p>
+                    
+                    <h2>3. Soberania Tecnológica Brasileira</h2>
+                    <p>Nosso objetivo é formar a próxima geração de desenvolvedores de elite no Brasil. Queremos exportar tecnologia, não apenas consumi-la. Acreditamos no potencial do nosso ecossistema.</p>
+                    
+                    <h2>4. Comunidade e Colaboração</h2>
+                    <p>Ninguém aprende sozinho. Fomentamos um ambiente de code reviews, pair programming e mentoria contínua. O sucesso de um é o sucesso de todos.</p>
+                    
+                    <h2>5. Aprendizado Contínuo (24/7)</h2>
+                    <p>A tecnologia não para, e nós também não. Nosso ambiente de imersão está disponível 24 horas por dia, 7 dias por semana, permitindo que você aprenda no seu próprio ritmo, mas com a intensidade necessária para alcançar a excelência.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal de Enrollment -->
     <div id="enrollment-modal" class="modal-overlay">
@@ -594,101 +624,151 @@
         const enrollmentModalClose = document.getElementById('enrollment-modal-close');
         const enrollmentForm = document.querySelector('.enrollment-form');
 
-        enrollmentBtnNavbar.addEventListener('click', () => {
-            enrollmentModal.classList.add('active');
-        });
+        if (enrollmentBtnNavbar) {
+            enrollmentBtnNavbar.addEventListener('click', () => {
+                enrollmentModal.classList.add('active');
+            });
+        }
 
-        enrollmentBtnHero.addEventListener('click', () => {
-            enrollmentModal.classList.add('active');
-        });
+        if (enrollmentBtnHero) {
+            enrollmentBtnHero.addEventListener('click', () => {
+                enrollmentModal.classList.add('active');
+            });
+        }
 
-        enrollmentModalClose.addEventListener('click', () => {
-            enrollmentModal.classList.remove('active');
-        });
-
-        enrollmentModal.addEventListener('click', (e) => {
-            if (e.target === enrollmentModal) {
+        if (enrollmentModalClose) {
+            enrollmentModalClose.addEventListener('click', () => {
                 enrollmentModal.classList.remove('active');
-            }
-        });
+            });
+        }
+
+        if (enrollmentModal) {
+            enrollmentModal.addEventListener('click', (e) => {
+                if (e.target === enrollmentModal) {
+                    enrollmentModal.classList.remove('active');
+                }
+            });
+        }
 
         // GitHub Login Handler
-        document.querySelector('.btn-github').addEventListener('click', () => {
-            console.log('Login com GitHub iniciado');
-            alert('Redirecionando para GitHub...');
-        });
+        const btnGithub = document.querySelector('.btn-github');
+        if (btnGithub) {
+            btnGithub.addEventListener('click', () => {
+                console.log('Login com GitHub iniciado');
+                alert('Redirecionando para GitHub...');
+            });
+        }
 
-        enrollmentForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('user-name').value;
-            const email = document.getElementById('user-email').value;
+        if (enrollmentForm) {
+            enrollmentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('user-name').value;
+                const email = document.getElementById('user-email').value;
 
-            // Validação de Nome
-            if (!name || name.trim().length < 3) {
-                alert('Por favor, insira um nome válido (mínimo 3 caracteres)!');
-                return;
-            }
+                // Validação de Nome
+                if (!name || name.trim().length < 3) {
+                    alert('Por favor, insira um nome válido (mínimo 3 caracteres)!');
+                    return;
+                }
 
-            // Validação de Email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('Por favor, insira um email válido!');
-                return;
-            }
+                // Validação de Email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Por favor, insira um email válido!');
+                    return;
+                }
 
-            console.log('Conta criada:', { name, email });
-            enrollmentForm.reset();
-            enrollmentModal.classList.remove('active');
-            alert('Bem-vindo ao Recife Labs! Verifique seu email para ativar sua conta.');
-        });
+                console.log('Conta criada:', { name, email });
+                enrollmentForm.reset();
+                enrollmentModal.classList.remove('active');
+                alert('Bem-vindo ao Recife Labs! Verifique seu email para ativar sua conta.');
+            });
+        }
 
         // Controle do Modal de Indicação
+        const referralBtn = document.getElementById('referral-btn');
         const referralModal = document.getElementById('referral-modal');
         const modalClose = document.getElementById('modal-close');
         const referralForm = document.querySelector('.referral-form');
 
-        referralBtn.addEventListener('click', () => {
-            referralModal.classList.add('active');
-        });
+        if (referralBtn) {
+            referralBtn.addEventListener('click', () => {
+                referralModal.classList.add('active');
+            });
+        }
 
-        modalClose.addEventListener('click', () => {
-            referralModal.classList.remove('active');
-        });
-
-        referralModal.addEventListener('click', (e) => {
-            if (e.target === referralModal) {
+        if (modalClose) {
+            modalClose.addEventListener('click', () => {
                 referralModal.classList.remove('active');
-            }
-        });
+            });
+        }
 
-        referralForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('friend-email').value;
-            const whatsapp = document.getElementById('friend-whatsapp').value;
+        if (referralModal) {
+            referralModal.addEventListener('click', (e) => {
+                if (e.target === referralModal) {
+                    referralModal.classList.remove('active');
+                }
+            });
+        }
 
-            // Validação de Email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const isValidEmail = emailRegex.test(email);
+        // Controle do Modal do Manifesto
+        const manifestBtn = document.getElementById('manifest-btn');
+        const manifestModal = document.getElementById('manifest-modal');
+        const manifestModalClose = document.getElementById('manifest-modal-close');
 
-            // Validação de WhatsApp (11 dígitos)
-            const phoneDigits = whatsapp.replace(/\D/g, '');
-            const isValidPhone = phoneDigits.length === 11;
+        if (manifestBtn) {
+            manifestBtn.addEventListener('click', () => {
+                manifestModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            });
+        }
 
-            if (!isValidEmail) {
-                alert('Por favor, insira um email válido!');
-                return;
-            }
+        if (manifestModalClose) {
+            manifestModalClose.addEventListener('click', () => {
+                manifestModal.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
+            });
+        }
 
-            if (!isValidPhone) {
-                alert('Por favor, insira um WhatsApp válido com 11 dígitos!');
-                return;
-            }
+        if (manifestModal) {
+            manifestModal.addEventListener('click', (e) => {
+                if (e.target === manifestModal) {
+                    manifestModal.classList.remove('active');
+                    document.body.style.overflow = ''; // Restore scrolling
+                }
+            });
+        }
 
-            console.log('Indicacao enviada:', { email, whatsapp });
-            referralForm.reset();
-            referralModal.classList.remove('active');
-            alert('Obrigado por indicar um amigo! Entraremos em contato em breve.');
-        });
+        if (referralForm) {
+            referralForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('friend-email').value;
+                const whatsapp = document.getElementById('friend-whatsapp').value;
+
+                // Validação de Email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const isValidEmail = emailRegex.test(email);
+
+                // Validação de WhatsApp (11 dígitos)
+                const phoneDigits = whatsapp.replace(/\D/g, '');
+                const isValidPhone = phoneDigits.length === 11;
+
+                if (!isValidEmail) {
+                    alert('Por favor, insira um email válido!');
+                    return;
+                }
+
+                if (!isValidPhone) {
+                    alert('Por favor, insira um WhatsApp válido com 11 dígitos!');
+                    return;
+                }
+
+                console.log('Indicacao enviada:', { email, whatsapp });
+                referralForm.reset();
+                referralModal.classList.remove('active');
+                alert('Obrigado por indicar um amigo! Entraremos em contato em breve.');
+            });
+        }
 
         // jQuery Mask Plugin - Máscaras dos Campos
         $('#friend-email').mask('A', {
