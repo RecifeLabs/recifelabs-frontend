@@ -131,7 +131,7 @@
         </div>
         <nav class="nav-buttons">
             <!-- Adicionar navegação para https://prototipo.recifelabs.dev-->
-            <button class="btn-outline-large" id="referral-btn">Login</button>
+            <button class="btn-outline-large app-access-btn" type="button">Login</button>
         </nav>
     </header>
 
@@ -148,7 +148,7 @@
 
             <div class="hero-actions">
                 <!-- Acionar o modal de login -->
-                <button class="btn-outline-large" id="referral-btn">Comece sua Jornada &rarr;</button>
+                <button class="btn-outline-large app-access-btn" type="button">Comece sua Jornada &rarr;</button>
             </div>
         </div>
 
@@ -695,31 +695,20 @@
             });
         }
 
+        // Direcionamento para a plataforma
+        const appAccessUrl = 'https://app.nutror.com/curso/eeb8f9abcbb9b3a90a975567cc4454bb7149b6ce';
+        const appAccessButtons = document.querySelectorAll('.app-access-btn');
+
+        appAccessButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                window.location.href = appAccessUrl;
+            });
+        });
+
         // Controle do Modal de Indicação
-        const referralBtn = document.getElementById('referral-btn');
         const referralModal = document.getElementById('referral-modal');
         const modalClose = document.getElementById('modal-close');
         const referralForm = document.querySelector('.referral-form');
-
-        if (referralBtn) {
-            referralBtn.addEventListener('click', () => {
-                referralModal.classList.add('active');
-            });
-        }
-
-        if (modalClose) {
-            modalClose.addEventListener('click', () => {
-                referralModal.classList.remove('active');
-            });
-        }
-
-        if (referralModal) {
-            referralModal.addEventListener('click', (e) => {
-                if (e.target === referralModal) {
-                    referralModal.classList.remove('active');
-                }
-            });
-        }
 
         // Controle do Modal do Manifesto
         const manifestBtn = document.getElementById('manifest-btn');
