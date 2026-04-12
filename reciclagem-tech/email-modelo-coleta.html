@@ -1,0 +1,58 @@
+=<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 30px; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .social-badge { background: #6f42c1; color: #ffffff; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        .highlight { color: #6f42c1; font-weight: bold; }
+        .impact-box { background: #f3efff; border-left: 4px solid #6f42c1; padding: 20px; margin: 20px 0; border-radius: 4px; }
+        .price-tag { font-size: 18px; color: #6f42c1; margin: 10px 0; display: block; font-weight: bold; }
+        .footer { margin-top: 30px; font-size: 11px; color: #999; border-top: 1px solid #eee; padding-top: 15px; text-align: center; }
+        .cta-button { 
+            display: inline-block; 
+            padding: 14px 30px; 
+            background-color: #6f42c1; 
+            color: #ffffff !important; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: bold;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="social-badge">Logística Reversa Smart</span>
+        
+        <p>Olá, time da <strong>{{ $json.razao_social }}</strong>.</p>
+
+        <p>Eu sou o Relton, da <strong>Recife Labs</strong>. Notei que sua empresa opera em <strong>{{ $json.uf }}</strong> e gostaria de propor uma solução definitiva para o seu descarte de lixo eletrônico.</p>
+
+        <p>Não somos apenas uma empresa de coleta. Somos uma comunidade de tecnologia que **hackeia o lixo eletrônico** para transformá-lo em kits de robótica e educação para jovens de escolas públicas.</p>
+
+        <div class="impact-box">
+            <strong>Como funciona nosso Protocolo de Coleta:</strong>
+            <p style="margin: 10px 0;">Você solicita a retirada através da nossa plataforma, nós validamos o payload de telemetria e agendamos a coleta. O hardware que não serve mais para você vira ferramenta de inclusão digital nas nossas oficinas.</p>
+            <span class="price-tag">Custo Zero de Coleta para Parceiros</span>
+            <small>Foco: Tecnologia, Meio Ambiente e Educação.</small>
+        </div>
+
+        <p>Podemos agendar a retirada dos eletrônicos obsoletos da <strong>{{ $json.razao_social }}</strong> e dar a eles um destino com impacto social real?</p>
+
+        <center>
+            <a href="https://wa.me/5581983350217?text=Quero%20agendar%20uma%20coleta%20de%20eletronicos%20para%20minha%20empresa" class="cta-button">AGENDAR COLETA SMART</a>
+        </center>
+
+        <p>Atenciosamente,<br>
+        <strong>Relton</strong><br>
+        Fundador | Recife Labs</p>
+
+        <div class="footer">
+            Sua empresa sustentando o futuro da tecnologia social.<br>
+            Mensagem para {{ $json.email }} | Responda "Sair" para não receber mais.
+        </div>
+    </div>
+</body>
+</html>
