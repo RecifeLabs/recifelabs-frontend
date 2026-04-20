@@ -549,12 +549,51 @@
 
         const updatePreview = () => {};
 
+        const fetchJsonWithTimeout = async (url, timeoutMs = 9000) => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: { Accept: 'application/json' },
+                    signal: controller.signal
+                });
+
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } finally {
+                clearTimeout(timeoutId);
+            }
+        };
+
         const fetchCompanyData = async (cnpjDigits) => {
-            const response = await fetch(`https://www.receitaws.com.br/v1/cnpj/${cnpjDigits}`);
-            if (!response.ok) throw new Error('Falha na consulta.');
-            const data = await response.json();
-            if (data.status === 'ERROR') throw new Error(data.message);
-            return data;
+            const errors = [];
+
+            try {
+                const brasilApiData = await fetchJsonWithTimeout(`https://brasilapi.com.br/api/cnpj/v1/${cnpjDigits}`);
+                return {
+                    name: brasilApiData.razao_social || brasilApiData.nome_fantasia || '',
+                    phone: brasilApiData.ddd_telefone_1 || brasilApiData.ddd_telefone_2 || '',
+                    provider: 'BrasilAPI'
+                };
+            } catch (error) {
+                errors.push(`BrasilAPI: ${error.message}`);
+            }
+
+            try {
+                const receitaWsData = await fetchJsonWithTimeout(`https://www.receitaws.com.br/v1/cnpj/${cnpjDigits}`);
+                if (receitaWsData.status === 'ERROR') throw new Error(receitaWsData.message || 'Consulta indisponível');
+                return {
+                    name: receitaWsData.nome || receitaWsData.fantasia || '',
+                    phone: receitaWsData.telefone || '',
+                    provider: 'ReceitaWS'
+                };
+            } catch (error) {
+                errors.push(`ReceitaWS: ${error.message}`);
+            }
+
+            throw new Error(errors.join(' | '));
         };
 
         const validateDocumentAndProceed = async () => {
@@ -573,15 +612,15 @@
             docStatus.textContent = `Documento validado: ${documentType.toUpperCase()}`;
 
             if (documentType === 'cnpj') {
-                setDocMessage('CNPJ válido. Consultando ReceitaWS...', 'success');
+                setDocMessage('CNPJ válido. Consultando bases públicas...', 'success');
                 try {
                     const companyData = await fetchCompanyData(digits);
-                    if (companyData.nome) nameField.value = companyData.nome;
-                    if (companyData.telefone) contactField.value = companyData.telefone;
+                    if (companyData.name) nameField.value = companyData.name;
+                    if (companyData.phone) contactField.value = companyData.phone;
                     typeField.value = 'Industrial';
-                    setDocMessage('Dados da empresa importados com sucesso.', 'success');
+                    setDocMessage(`Dados da empresa importados com sucesso via ${companyData.provider}.`, 'success');
                 } catch (e) {
-                    setDocMessage('CNPJ válido, mas falha ao importar dados automáticos.', 'error');
+                    setDocMessage('CNPJ válido, mas os serviços de consulta estão indisponíveis. Preencha os dados manualmente.', 'error');
                 }
             } else {
                 typeField.value = 'Residencial';
