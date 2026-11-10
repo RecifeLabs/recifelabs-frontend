@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recife Labs — Controle IoT em Tempo Real</title>
+  <!-- Biblioteca MQTT.js via CDN para conexão WebSocket no Browser -->
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <!-- Biblioteca QRCode.js para gerar o acesso instantâneo -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #131a2a;
+      --accent: #00f5a0;
+      --text: #e2e8f0;
+      --muted: #64748b;
+    }
+    body {
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: var(--card);
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 245, 160, 0.1);
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    p { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    .led-indicator {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      margin: 0 auto 24px;
+      background: #1e293b;
+      border: 2px solid #334155;
+      transition: all 0.3s ease;
+    }
+    .led-indicator.on {
+      background: #38bdf8;
+      border-color: #7dd3fc;
+      box-shadow: 0 0 30px #38bdf8;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: bold;
+      font-family: inherit;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--accent);
+      color: #0b0f19;
+      transition: opacity 0.2s;
+    }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .qr-section {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px dashed #334155;
+    }
+    #qrcode {
+      background: #ffffff;
+      padding: 10px;
+      display: inline-block;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .status { font-size: 12px; margin-top: 16px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="badge">recife-labs://telemetry</span>
+    <h1>Controle LED D2 (ESP32)</h1>
+    <p>Comunicação via MQTT sobre WebSocket</p>
+
+    <!-- Representação visual do LED físico -->
+    <div id="ledVisual" class="led-indicator"></div>
+
+    <button id="toggleBtn" disabled>Conectando ao Broker...</button>
+    <div id="statusText" class="status">Status: Inicializando...</div>
+
+    <!-- Área do QR Code para controle pelo celular -->
+    <div class="qr-section">
+      <p style="margin-bottom: 6px;">Escaneie para controlar pelo celular:</p>
+      <div id="qrcode"></div>
+    </div>
+  </div>
+
+  <script>
+    // Tópico MQTT exclusivo (o aluno pode personalizar o ID para evitar conflito)
+    const TOPIC = 'recifelabs/iot/esp32/led';
+    // Broker público gratuito com suporte a WebSocket Seguro (WSS)
+    const BROKER_URL = 'wss://broker.emqx.io:8084/mqtt';
+
+    let ledState = false;
+    const toggleBtn = document.getElementById('toggleBtn');
+    const ledVisual = document.getElementById('ledVisual');
+    const statusText = document.getElementById('statusText');
+
+    // 1. Busca a URL da rede local no backend Node.js e gera o QR Code
+    fetch('/api/network-info')
+      .then(res => res.json())
+      .then(data => {
+        new QRCode(document.getElementById('qrcode'), {
+          text: data.url,
+          width: 128,
+          height: 128
+        });
+      });
+
+    // 2. Conecta o navegador diretamente ao Broker MQTT via WebSocket
+    const client = mqtt.connect(BROKER_URL, {
+      clientId: 'recifelabs_web_' + Math.random().toString(16).substring(2, 8)
+    });
+
+    client.on('connect', () => {
+      statusText.innerText = 'Status: Conectado via WebSocket';
+      toggleBtn.disabled = false;
+      updateUI();
+
+      // Assina o tópico para sincronizar o estado caso outro celular clique
+      client.subscribe(TOPIC);
+    });
+
+    client.on('error', (error) => {
+      statusText.innerText = `Status: Erro MQTT - ${error.message}`;
+      toggleBtn.disabled = true;
+      console.error('Falha na conexão MQTT:', error);
+    });
+
+    // 3. Recebe atualizações em tempo real (sincroniza múltiplos navegadores)
+    client.on('message', (topic, message) => {
+      if (topic === TOPIC) {
+        const payload = JSON.parse(message.toString());
+        ledState = payload.led === 'ON';
+        updateUI();
+      }
+    });
+
+    // 4. Publica o comando MQTT ao clicar no botão
+    toggleBtn.addEventListener('click', () => {
+      const nextState = !ledState ? 'ON' : 'OFF';
+      const payload = JSON.stringify({
+        led: nextState,
+        source: 'web-client',
+        timestamp: Date.now()
+      });
+
+      // Publica com retain=true para manter o último estado salvo no broker
+      client.publish(TOPIC, payload, { qos: 1, retain: true });
+    });
+
+    function updateUI() {
+      if (ledState) {
+        ledVisual.classList.add('on');
+        toggleBtn.innerText = 'DESLIGAR LED D2';
+      } else {
+        ledVisual.classList.remove('on');
+        toggleBtn.innerText = 'LIGAR LED D2';
+      }
+    }
+  </script>
+</body>
+</html>
