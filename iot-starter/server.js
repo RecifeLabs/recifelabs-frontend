@@ -1,5 +1,4 @@
 const express = require('express');
-const os = require('os');
 const path = require('path');
 
 const app = express();
@@ -8,24 +7,10 @@ const PORT = 8000;
 // Serve os arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rota auxiliar para descobrir o IP local da máquina na rede Wi-Fi
-// Isso permite gerar um QR Code válido para o celular acessar
+// Mantém as informações de conexão disponíveis para clientes externos.
 app.get('/api/network-info', (req, res) => {
-  const interfaces = os.networkInterfaces();
-  let localIp = 'localhost';
-
-  for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name]) {
-      // Filtra apenas endereços IPv4 externos (rede local)
-      if (iface.family === 'IPv4' && !iface.internal) {
-        localIp = iface.address;
-        break;
-      }
-    }
-  }
-
   res.json({
-    url: `http://${localIp}:${PORT}`,
+    url: process.env.PUBLIC_URL || `${req.protocol}://${req.get('host')}`,
     broker: 'wss://broker.emqx.io:8084/mqtt',
     topic: 'recifelabs/iot/esp32/led'
   });

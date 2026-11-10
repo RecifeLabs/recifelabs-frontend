@@ -121,16 +121,13 @@
     const ledVisual = document.getElementById('ledVisual');
     const statusText = document.getElementById('statusText');
 
-    // 1. Busca a URL da rede local no backend Node.js e gera o QR Code
-    fetch('/api/network-info')
-      .then(res => res.json())
-      .then(data => {
-        new QRCode(document.getElementById('qrcode'), {
-          text: data.url,
-          width: 128,
-          height: 128
-        });
-      });
+    // 1. Usa o endereço público pelo qual esta página foi acessada.
+    // Em produção, isso gera o QR Code com https://start.labs.recife.br.
+    new QRCode(document.getElementById('qrcode'), {
+      text: window.location.origin,
+      width: 128,
+      height: 128
+    });
 
     // 2. Conecta o navegador diretamente ao Broker MQTT via WebSocket
     const client = mqtt.connect(BROKER_URL, {
