@@ -143,9 +143,11 @@
 
   <script>
     // Tópico MQTT exclusivo (o aluno pode personalizar o ID para evitar conflito)
-    let TOPIC = 'recifelabs/iot/esp32/led';
+    const DEFAULT_TOPIC = 'recifelabs/iot/esp32/led';
+    let TOPIC = DEFAULT_TOPIC;
     // Broker público gratuito com suporte a WebSocket Seguro (WSS)
-    let BROKER_URL = 'wss://broker.emqx.io:8084/mqtt';
+    const DEFAULT_BROKER_URL = 'wss://broker.emqx.io:8084/mqtt';
+    let BROKER_URL = DEFAULT_BROKER_URL;
 
     let ledState = false;
     const toggleBtn = document.getElementById('toggleBtn');
@@ -153,9 +155,11 @@
     const statusText = document.getElementById('statusText');
     const deviceStatusDot = document.getElementById('deviceStatusDot');
     const deviceStatusText = document.getElementById('deviceStatusText');
-    let STATUS_TOPIC = 'recifelabs/iot/esp32/status/#';
-    let STATUS_TOPIC_PREFIX = 'recifelabs/iot/esp32/status/';
-    let DEVICE_SIGNAL_TIMEOUT = 15000;
+    const DEFAULT_STATUS_TOPIC = 'recifelabs/iot/esp32/status/#';
+    const DEFAULT_DEVICE_SIGNAL_TIMEOUT = 15000;
+    let STATUS_TOPIC = DEFAULT_STATUS_TOPIC;
+    let STATUS_TOPIC_PREFIX = DEFAULT_STATUS_TOPIC.slice(0, -1);
+    let DEVICE_SIGNAL_TIMEOUT = DEFAULT_DEVICE_SIGNAL_TIMEOUT;
     let lastDeviceSignal = 0;
     let deviceId = '';
 
@@ -243,13 +247,24 @@
         return response.json();
       })
       .then(config => {
-        TOPIC = config.topic;
-        BROKER_URL = config.broker;
-        STATUS_TOPIC = config.statusTopic;
+        TOPIC = typeof config.topic === 'string' && config.topic
+          ? config.topic
+          : DEFAULT_TOPIC;
+        BROKER_URL = typeof config.broker === 'string' && config.broker
+          ? config.broker
+          : DEFAULT_BROKER_URL;
+        STATUS_TOPIC = typeof config.statusTopic === 'string' && config.statusTopic
+          ? config.statusTopic
+          : DEFAULT_STATUS_TOPIC;
         STATUS_TOPIC_PREFIX = STATUS_TOPIC.endsWith('/#')
           ? STATUS_TOPIC.slice(0, -1)
           : `${STATUS_TOPIC}/`;
-        DEVICE_SIGNAL_TIMEOUT = config.deviceSignalTimeout;
+        DEVICE_SIGNAL_TIMEOUT = Number.isFinite(config.deviceSignalTimeout)
+          ? config.deviceSignalTimeout
+          : DEFAULT_DEVICE_SIGNAL_TIMEOUT;
+        if (typeof config.statusTopic !== 'string' || !Number.isFinite(config.deviceSignalTimeout)) {
+          console.warn('Backend sem configuração de presença; usando valores padrão.');
+        }
         connectMqtt();
       })
       .catch(error => {
