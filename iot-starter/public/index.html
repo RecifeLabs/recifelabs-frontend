@@ -89,6 +89,26 @@
       margin-top: 10px;
     }
     .status { font-size: 12px; margin-top: 16px; color: var(--muted); }
+    .device-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #64748b;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .status-dot.online {
+      background: #22c55e;
+      box-shadow: 0 0 12px #22c55e;
+    }
     .signature {
       margin-top: 24px;
       font-size: 11px;
@@ -108,6 +128,10 @@
 
     <button id="toggleBtn" disabled>Conectando ao Broker...</button>
     <div id="statusText" class="status">Status: Inicializando...</div>
+    <div class="device-status">
+      <span id="deviceStatusDot" class="status-dot" aria-hidden="true"></span>
+      <span id="deviceStatusText">ESP32: aguardando sinal</span>
+    </div>
 
     <!-- Área do QR Code para controle pelo celular -->
     <div class="qr-section">
@@ -119,14 +143,21 @@
 
   <script>
     // Tópico MQTT exclusivo (o aluno pode personalizar o ID para evitar conflito)
-    const TOPIC = 'recifelabs/iot/esp32/led';
+    let TOPIC = 'recifelabs/iot/esp32/led';
     // Broker público gratuito com suporte a WebSocket Seguro (WSS)
-    const BROKER_URL = 'wss://broker.emqx.io:8084/mqtt';
+    let BROKER_URL = 'wss://broker.emqx.io:8084/mqtt';
 
     let ledState = false;
     const toggleBtn = document.getElementById('toggleBtn');
     const ledVisual = document.getElementById('ledVisual');
     const statusText = document.getElementById('statusText');
+    const deviceStatusDot = document.getElementById('deviceStatusDot');
+    const deviceStatusText = document.getElementById('deviceStatusText');
+    let STATUS_TOPIC = 'recifelabs/iot/esp32/status/#';
+    let STATUS_TOPIC_PREFIX = 'recifelabs/iot/esp32/status/';
+    let DEVICE_SIGNAL_TIMEOUT = 15000;
+    let lastDeviceSignal = 0;
+    let deviceId = '';
 
     // 1. Usa o endereço público pelo qual esta página foi acessada.
     // Em produção, isso gera o QR Code com https://start.labs.recife.br.
@@ -137,46 +168,94 @@
     });
 
     // 2. Conecta o navegador diretamente ao Broker MQTT via WebSocket
-    const client = mqtt.connect(BROKER_URL, {
+    function connectMqtt() {
+      const client = mqtt.connect(BROKER_URL, {
       clientId: 'recifelabs_web_' + Math.random().toString(16).substring(2, 8)
     });
 
-    client.on('connect', () => {
-      statusText.innerText = 'Status: Conectado via WebSocket';
-      toggleBtn.disabled = false;
-      updateUI();
+      client.on('connect', () => {
+        statusText.innerText = 'Status: Conectado via WebSocket';
+        toggleBtn.disabled = false;
+        updateUI();
 
-      // Assina o tópico para sincronizar o estado caso outro celular clique
-      client.subscribe(TOPIC);
-    });
+        // Assina o tópico para sincronizar o estado caso outro celular clique
+        client.subscribe(TOPIC);
+        client.subscribe(STATUS_TOPIC);
+      });
 
-    client.on('error', (error) => {
-      statusText.innerText = `Status: Erro MQTT - ${error.message}`;
-      toggleBtn.disabled = true;
-      console.error('Falha na conexão MQTT:', error);
-    });
+      client.on('error', (error) => {
+        statusText.innerText = `Status: Erro MQTT - ${error.message}`;
+        toggleBtn.disabled = true;
+        console.error('Falha na conexão MQTT:', error);
+      });
 
     // 3. Recebe atualizações em tempo real (sincroniza múltiplos navegadores)
-    client.on('message', (topic, message) => {
+      client.on('message', (topic, message) => {
       if (topic === TOPIC) {
         const payload = JSON.parse(message.toString());
         ledState = payload.led === 'ON';
         updateUI();
+      } else if (topic.startsWith(STATUS_TOPIC_PREFIX)) {
+        try {
+          const payload = JSON.parse(message.toString());
+          if (payload.status !== 'online' || !payload.deviceId) {
+            return;
+          }
+
+          deviceId = payload.deviceId;
+          lastDeviceSignal = Date.now();
+          deviceStatusDot.classList.add('online');
+          deviceStatusText.innerText = `ESP32 ${deviceId}: conectado`;
+        } catch (error) {
+          console.warn('Sinal de presença do ESP32 inválido:', error);
+        }
       }
-    });
+      });
+
+      setInterval(() => {
+      if (lastDeviceSignal && Date.now() - lastDeviceSignal > DEVICE_SIGNAL_TIMEOUT) {
+        deviceStatusDot.classList.remove('online');
+        deviceStatusText.innerText = deviceId
+          ? `ESP32 ${deviceId}: desconectado`
+          : 'ESP32: aguardando sinal';
+      }
+      }, 1000);
 
     // 4. Publica o comando MQTT ao clicar no botão
-    toggleBtn.addEventListener('click', () => {
+      toggleBtn.addEventListener('click', () => {
       const nextState = !ledState ? 'ON' : 'OFF';
       const payload = JSON.stringify({
         led: nextState,
         source: 'web-client',
         timestamp: Date.now()
-      });
+        });
 
       // Publica com retain=true para manter o último estado salvo no broker
       client.publish(TOPIC, payload, { qos: 1, retain: true });
     });
+    }
+
+    fetch('/api/network-info')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(config => {
+        TOPIC = config.topic;
+        BROKER_URL = config.broker;
+        STATUS_TOPIC = config.statusTopic;
+        STATUS_TOPIC_PREFIX = STATUS_TOPIC.endsWith('/#')
+          ? STATUS_TOPIC.slice(0, -1)
+          : `${STATUS_TOPIC}/`;
+        DEVICE_SIGNAL_TIMEOUT = config.deviceSignalTimeout;
+        connectMqtt();
+      })
+      .catch(error => {
+        statusText.innerText = `Status: Erro de configuração - ${error.message}`;
+        console.error('Falha ao carregar configuração MQTT:', error);
+      });
 
     function updateUI() {
       if (ledState) {
