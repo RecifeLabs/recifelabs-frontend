@@ -102,7 +102,7 @@
     }
     .device-item {
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
       gap: 8px;
       min-height: 38px;
@@ -125,16 +125,11 @@
       color: var(--muted);
       font-size: 11px;
     }
-    .device-select {
-      width: 100%;
-      margin-top: 12px;
-      margin-bottom: 12px;
-      padding: 10px;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      background: #0b0f19;
-      color: var(--text);
-      font-family: inherit;
+    .device-radio {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: var(--accent);
     }
     .status-dot {
       width: 10px;
@@ -165,9 +160,6 @@
     <!-- Representação visual do LED físico -->
     <div id="ledVisual" class="led-indicator"></div>
 
-    <select id="deviceSelect" class="device-select" aria-label="Selecionar dispositivo">
-      <option value="">Aguardando dispositivos...</option>
-    </select>
     <button id="toggleBtn" disabled>Conectando ao Broker...</button>
     <div id="statusText" class="status">Status: Inicializando...</div>
     <div class="device-status">
@@ -197,7 +189,6 @@
     const statusText = document.getElementById('statusText');
     const deviceStatusText = document.getElementById('deviceStatusText');
     const deviceList = document.getElementById('deviceList');
-    const deviceSelect = document.getElementById('deviceSelect');
     const DEFAULT_STATUS_TOPIC = 'recifelabs/iot/+/status/#';
     const DEFAULT_DEVICE_SIGNAL_TIMEOUT = 15000;
     const DEFAULT_DEVICE_TOPICS = {
@@ -215,6 +206,7 @@
     let DEVICE_TOPICS = DEFAULT_DEVICE_TOPICS;
     const devices = new Map();
     const ledStates = new Map();
+    let selectedDeviceKey = '';
 
     // 1. Usa o endereço público pelo qual esta página foi acessada.
     // Em produção, isso gera o QR Code com https://start.labs.recife.br.
@@ -327,11 +319,6 @@
       // Publica com retain=true para manter o último estado salvo no broker
       client.publish(DEVICE_TOPICS[selectedDeviceType].led, payload, { qos: 1, retain: true });
     });
-      deviceSelect.addEventListener('change', () => {
-        const deviceType = getSelectedDeviceType();
-        ledState = ledStates.get(deviceType) || false;
-        updateUI();
-      });
     }
 
     fetch('/api/network-info')
@@ -378,8 +365,7 @@
     }
 
     function getSelectedDeviceType() {
-      const key = deviceSelect.value;
-      return key ? key.split(':')[0] : '';
+      return selectedDeviceKey ? selectedDeviceKey.split(':')[0] : '';
     }
 
     function updateDeviceList() {
@@ -391,25 +377,20 @@
 
       if (orderedDevices.length === 0) {
         deviceStatusText.innerText = 'Dispositivos: aguardando sinal';
-        deviceSelect.replaceChildren(new Option('Aguardando dispositivos...', ''));
+        selectedDeviceKey = '';
         toggleBtn.disabled = true;
         return;
       }
 
-      const previousSelection = deviceSelect.value;
-      deviceSelect.replaceChildren();
+      if (!orderedDevices.some(device => device.key === selectedDeviceKey)) {
+        selectedDeviceKey = orderedDevices[0].key;
+      }
 
       let onlineCount = 0;
       orderedDevices.forEach(device => {
         if (device.status === 'online') {
           onlineCount++;
         }
-
-        const option = new Option(
-          `${device.deviceType.toUpperCase()} ${device.deviceId} (${device.status})`,
-          device.key
-        );
-        deviceSelect.appendChild(option);
 
         const item = document.createElement('div');
         item.className = 'device-item';
@@ -431,20 +412,30 @@
         meta.className = 'device-meta';
         meta.innerText = device.status === 'online' ? 'Conectado' : 'Desconectado';
 
+        const radio = document.createElement('input');
+        radio.className = 'device-radio';
+        radio.type = 'radio';
+        radio.name = 'selected-device';
+        radio.value = device.key;
+        radio.checked = device.key === selectedDeviceKey;
+        radio.setAttribute('aria-label', `Selecionar ${device.deviceType} ${device.deviceId}`);
+        radio.addEventListener('change', () => {
+          selectedDeviceKey = radio.value;
+          ledState = ledStates.get(getSelectedDeviceType()) || false;
+          updateDeviceList();
+        });
+
         info.appendChild(name);
         info.appendChild(meta);
         item.appendChild(dot);
         item.appendChild(info);
+        item.appendChild(radio);
         deviceList.appendChild(item);
       });
 
-      if (orderedDevices.some(device => device.key === previousSelection)) {
-        deviceSelect.value = previousSelection;
-      }
-
       const selectedDeviceType = getSelectedDeviceType();
       ledState = ledStates.get(selectedDeviceType) || false;
-      const selectedDevice = orderedDevices.find(device => device.key === deviceSelect.value);
+      const selectedDevice = orderedDevices.find(device => device.key === selectedDeviceKey);
       toggleBtn.disabled = !selectedDevice || selectedDevice.status !== 'online';
       deviceStatusText.innerText =
         `${orderedDevices.length} dispositivo(s) identificado(s), ${onlineCount} conectado(s)`;
