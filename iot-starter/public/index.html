@@ -380,6 +380,8 @@
         deviceStatusText.innerText = 'Dispositivos: aguardando sinal';
         selectedDeviceKey = '';
         toggleBtn.disabled = true;
+        ledState = false;
+        updateUI();
         return;
       }
 
@@ -441,9 +443,11 @@
         deviceList.appendChild(item);
       });
 
-      const selectedDeviceType = getSelectedDeviceType();
-      ledState = ledStates.get(selectedDeviceType) || false;
       const selectedDevice = orderedDevices.find(device => device.key === selectedDeviceKey);
+      const selectedDeviceType = getSelectedDeviceType();
+      ledState = selectedDevice?.status === 'online'
+        ? ledStates.get(selectedDeviceType) || false
+        : false;
       toggleBtn.disabled = !selectedDevice || selectedDevice.status !== 'online';
       deviceStatusText.innerText =
         `${orderedDevices.length} dispositivo(s) identificado(s), ${onlineCount} conectado(s)`;
