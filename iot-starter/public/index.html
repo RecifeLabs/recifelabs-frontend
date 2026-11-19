@@ -90,14 +90,51 @@
     }
     .status { font-size: 12px; margin-top: 16px; color: var(--muted); }
     .device-status {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
       margin: 12px auto 0;
       font-size: 12px;
       line-height: 16px;
       color: var(--muted);
+    }
+    .device-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .device-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      text-align: left;
+    }
+    .device-info {
+      min-width: 0;
+    }
+    .device-name {
+      display: block;
+      color: var(--text);
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+    .device-meta {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .device-select {
+      width: 100%;
+      margin-top: 12px;
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      background: #0b0f19;
+      color: var(--text);
+      font-family: inherit;
     }
     .status-dot {
       width: 10px;
@@ -122,17 +159,20 @@
 <body>
   <div class="container">
     <span class="badge">recife-labs://telemetry</span>
-    <h1>Controle LED D2 (ESP32)</h1>
+    <h1>Controle LED D2</h1>
     <p>Comunicação via MQTT sobre WebSocket</p>
 
     <!-- Representação visual do LED físico -->
     <div id="ledVisual" class="led-indicator"></div>
 
+    <select id="deviceSelect" class="device-select" aria-label="Selecionar dispositivo">
+      <option value="">Aguardando dispositivos...</option>
+    </select>
     <button id="toggleBtn" disabled>Conectando ao Broker...</button>
     <div id="statusText" class="status">Status: Inicializando...</div>
     <div class="device-status">
-      <span id="deviceStatusDot" class="status-dot" aria-hidden="true"></span>
-      <span id="deviceStatusText">ESP32: aguardando sinal</span>
+      <span id="deviceStatusText">Dispositivos: aguardando sinal</span>
+      <div id="deviceList" class="device-list"></div>
     </div>
 
     <!-- Área do QR Code para controle pelo celular -->
@@ -145,7 +185,7 @@
 
   <script>
     // Tópico MQTT exclusivo (o aluno pode personalizar o ID para evitar conflito)
-    const DEFAULT_TOPIC = 'recifelabs/iot/esp32/led';
+    const DEFAULT_TOPIC = 'recifelabs/iot/esp8266/led';
     let TOPIC = DEFAULT_TOPIC;
     // Broker público gratuito com suporte a WebSocket Seguro (WSS)
     const DEFAULT_BROKER_URL = 'wss://broker.emqx.io:8084/mqtt';
@@ -155,15 +195,26 @@
     const toggleBtn = document.getElementById('toggleBtn');
     const ledVisual = document.getElementById('ledVisual');
     const statusText = document.getElementById('statusText');
-    const deviceStatusDot = document.getElementById('deviceStatusDot');
     const deviceStatusText = document.getElementById('deviceStatusText');
-    const DEFAULT_STATUS_TOPIC = 'recifelabs/iot/esp32/status/#';
+    const deviceList = document.getElementById('deviceList');
+    const deviceSelect = document.getElementById('deviceSelect');
+    const DEFAULT_STATUS_TOPIC = 'recifelabs/iot/+/status/#';
     const DEFAULT_DEVICE_SIGNAL_TIMEOUT = 15000;
+    const DEFAULT_DEVICE_TOPICS = {
+      esp32: {
+        led: 'recifelabs/iot/esp32/led',
+        status: 'recifelabs/iot/esp32/status/#'
+      },
+      esp8266: {
+        led: 'recifelabs/iot/esp8266/led',
+        status: 'recifelabs/iot/esp8266/status/#'
+      }
+    };
     let STATUS_TOPIC = DEFAULT_STATUS_TOPIC;
-    let STATUS_TOPIC_PREFIX = DEFAULT_STATUS_TOPIC.slice(0, -1);
     let DEVICE_SIGNAL_TIMEOUT = DEFAULT_DEVICE_SIGNAL_TIMEOUT;
-    let lastDeviceSignal = 0;
-    let deviceId = '';
+    let DEVICE_TOPICS = DEFAULT_DEVICE_TOPICS;
+    const devices = new Map();
+    const ledStates = new Map();
 
     // 1. Usa o endereço público pelo qual esta página foi acessada.
     // Em produção, isso gera o QR Code com https://start.labs.recife.br.
@@ -181,11 +232,13 @@
 
       client.on('connect', () => {
         statusText.innerText = 'Status: Conectado via WebSocket';
-        toggleBtn.disabled = false;
+        toggleBtn.disabled = devices.size === 0;
         updateUI();
 
-        // Assina o tópico para sincronizar o estado caso outro celular clique
-        client.subscribe(TOPIC);
+        // Assina os comandos de LED e a presença dos dispositivos ESP32/ESP8266
+        Object.values(DEVICE_TOPICS).forEach(deviceTopics => {
+          client.subscribe(deviceTopics.led);
+        });
         client.subscribe(STATUS_TOPIC);
       });
 
@@ -197,38 +250,73 @@
 
     // 3. Recebe atualizações em tempo real (sincroniza múltiplos navegadores)
       client.on('message', (topic, message) => {
-      if (topic === TOPIC) {
-        const payload = JSON.parse(message.toString());
-        ledState = payload.led === 'ON';
-        updateUI();
-      } else if (topic.startsWith(STATUS_TOPIC_PREFIX)) {
+        const ledDeviceType = Object.entries(DEVICE_TOPICS).find(([, deviceTopics]) =>
+          topic === deviceTopics.led
+        );
+
+        if (ledDeviceType) {
+          try {
+            const payload = JSON.parse(message.toString());
+            ledStates.set(ledDeviceType[0], payload.led === 'ON');
+            if (getSelectedDeviceType() === ledDeviceType[0]) {
+              ledState = ledStates.get(ledDeviceType[0]) || false;
+            }
+            updateUI();
+          } catch (error) {
+            console.warn('Estado do LED inválido:', error);
+          }
+          return;
+        }
+
+        const statusMatch = topic.match(/^recifelabs\/iot\/(esp32|esp8266)\/status\/(.+)$/);
+        if (!statusMatch) {
+          return;
+        }
+
         try {
           const payload = JSON.parse(message.toString());
-          if (payload.status !== 'online' || !payload.deviceId) {
+          if (!payload.status) {
             return;
           }
 
-          deviceId = payload.deviceId;
-          lastDeviceSignal = Date.now();
-          deviceStatusDot.classList.add('online');
-          deviceStatusText.innerText = `ESP32 ${deviceId}: conectado`;
+          const deviceType = statusMatch[1];
+          const deviceId = payload.deviceId || statusMatch[2];
+          const deviceStatus = payload.status === 'offline' ? 'offline' : 'online';
+          const key = `${deviceType}:${deviceId}`;
+
+          devices.set(key, {
+            key,
+            deviceType,
+            deviceId,
+            status: deviceStatus,
+            lastSignal: Date.now()
+          });
+          updateDeviceList();
         } catch (error) {
-          console.warn('Sinal de presença do ESP32 inválido:', error);
+          console.warn('Sinal de presença do dispositivo inválido:', error);
         }
-      }
       });
 
       setInterval(() => {
-      if (lastDeviceSignal && Date.now() - lastDeviceSignal > DEVICE_SIGNAL_TIMEOUT) {
-        deviceStatusDot.classList.remove('online');
-        deviceStatusText.innerText = deviceId
-          ? `ESP32 ${deviceId}: desconectado`
-          : 'ESP32: aguardando sinal';
-      }
+        let changed = false;
+        devices.forEach(device => {
+          if (device.status === 'online' &&
+              Date.now() - device.lastSignal > DEVICE_SIGNAL_TIMEOUT) {
+            device.status = 'offline';
+            changed = true;
+          }
+        });
+        if (changed) {
+          updateDeviceList();
+        }
       }, 1000);
 
-    // 4. Publica o comando MQTT ao clicar no botão
+    // 4. Publica o comando MQTT para a placa selecionada
       toggleBtn.addEventListener('click', () => {
+      const selectedDeviceType = getSelectedDeviceType();
+      if (!selectedDeviceType) {
+        return;
+      }
       const nextState = !ledState ? 'ON' : 'OFF';
       const payload = JSON.stringify({
         led: nextState,
@@ -237,8 +325,13 @@
         });
 
       // Publica com retain=true para manter o último estado salvo no broker
-      client.publish(TOPIC, payload, { qos: 1, retain: true });
+      client.publish(DEVICE_TOPICS[selectedDeviceType].led, payload, { qos: 1, retain: true });
     });
+      deviceSelect.addEventListener('change', () => {
+        const deviceType = getSelectedDeviceType();
+        ledState = ledStates.get(deviceType) || false;
+        updateUI();
+      });
     }
 
     fetch('/api/network-info')
@@ -258,9 +351,9 @@
         STATUS_TOPIC = typeof config.statusTopic === 'string' && config.statusTopic
           ? config.statusTopic
           : DEFAULT_STATUS_TOPIC;
-        STATUS_TOPIC_PREFIX = STATUS_TOPIC.endsWith('/#')
-          ? STATUS_TOPIC.slice(0, -1)
-          : `${STATUS_TOPIC}/`;
+        DEVICE_TOPICS = config.deviceTopics && typeof config.deviceTopics === 'object'
+          ? { ...DEFAULT_DEVICE_TOPICS, ...config.deviceTopics }
+          : DEFAULT_DEVICE_TOPICS;
         DEVICE_SIGNAL_TIMEOUT = Number.isFinite(config.deviceSignalTimeout)
           ? config.deviceSignalTimeout
           : DEFAULT_DEVICE_SIGNAL_TIMEOUT;
@@ -282,6 +375,80 @@
         ledVisual.classList.remove('on');
         toggleBtn.innerText = 'LIGAR LED D2';
       }
+    }
+
+    function getSelectedDeviceType() {
+      const key = deviceSelect.value;
+      return key ? key.split(':')[0] : '';
+    }
+
+    function updateDeviceList() {
+      deviceList.replaceChildren();
+
+      const orderedDevices = Array.from(devices.values()).sort((a, b) =>
+        a.deviceType.localeCompare(b.deviceType) || a.deviceId.localeCompare(b.deviceId)
+      );
+
+      if (orderedDevices.length === 0) {
+        deviceStatusText.innerText = 'Dispositivos: aguardando sinal';
+        deviceSelect.replaceChildren(new Option('Aguardando dispositivos...', ''));
+        toggleBtn.disabled = true;
+        return;
+      }
+
+      const previousSelection = deviceSelect.value;
+      deviceSelect.replaceChildren();
+
+      let onlineCount = 0;
+      orderedDevices.forEach(device => {
+        if (device.status === 'online') {
+          onlineCount++;
+        }
+
+        const option = new Option(
+          `${device.deviceType.toUpperCase()} ${device.deviceId} (${device.status})`,
+          device.key
+        );
+        deviceSelect.appendChild(option);
+
+        const item = document.createElement('div');
+        item.className = 'device-item';
+
+        const dot = document.createElement('span');
+        dot.className = 'status-dot';
+        if (device.status === 'online') {
+          dot.classList.add('online');
+        }
+
+        const info = document.createElement('div');
+        info.className = 'device-info';
+
+        const name = document.createElement('span');
+        name.className = 'device-name';
+        name.innerText = `${device.deviceType.toUpperCase()} · ${device.deviceId}`;
+
+        const meta = document.createElement('span');
+        meta.className = 'device-meta';
+        meta.innerText = device.status === 'online' ? 'Conectado' : 'Desconectado';
+
+        info.appendChild(name);
+        info.appendChild(meta);
+        item.appendChild(dot);
+        item.appendChild(info);
+        deviceList.appendChild(item);
+      });
+
+      if (orderedDevices.some(device => device.key === previousSelection)) {
+        deviceSelect.value = previousSelection;
+      }
+
+      const selectedDeviceType = getSelectedDeviceType();
+      ledState = ledStates.get(selectedDeviceType) || false;
+      const selectedDevice = orderedDevices.find(device => device.key === deviceSelect.value);
+      toggleBtn.disabled = !selectedDevice || selectedDevice.status !== 'online';
+      deviceStatusText.innerText =
+        `${orderedDevices.length} dispositivo(s) identificado(s), ${onlineCount} conectado(s)`;
+      updateUI();
     }
   </script>
 </body>
