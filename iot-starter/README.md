@@ -134,7 +134,7 @@ o endpoint OsmAnd do Traccar. O identificador enviado no parâmetro `id` é o MA
 da placa sem os dois-pontos:
 
 ```text
-http://TRACCAR_HOST:5055/?id=AABBCCDDEEFF&lat=-8.047600&lon=-34.877000&speed=0.0&altitude=0.0
+http://TRACCAR_HOST:5055/?id=AABBCCDDEEFF&timestamp=1763576000&lat=-8.047600&lon=-34.877000&speed=0.0&altitude=0.0
 ```
 
 Antes de gravar o firmware, configure `TRACCAR_SERVER_URL` com o endereço do

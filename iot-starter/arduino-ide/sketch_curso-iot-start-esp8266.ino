@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <PubSubClient.h> // Instale via Library Manager: "PubSubClient" de Nick O'Leary
+#include <time.h>
 
 // --- CONFIGURACOES DE REDE E BROKER ---
 const char* WIFI_SSID     = "SSID";
@@ -44,11 +45,20 @@ bool sendLocationToTraccar() {
   WiFiClient traccarClient;
   HTTPClient http;
   String url = String(TRACCAR_SERVER_URL) +
-               "?id=" + deviceId +
-               "&lat=" + String(FIXED_LATITUDE, 6) +
+               "?id=" + deviceId;
+
+  time_t epochTime = time(nullptr);
+  if (epochTime > 1000000000) {
+    url += "&timestamp=" + String((unsigned long)epochTime);
+  }
+
+  url += "&lat=" + String(FIXED_LATITUDE, 6) +
                "&lon=" + String(FIXED_LONGITUDE, 6) +
                "&speed=" + String(FIXED_SPEED, 1) +
                "&altitude=" + String(FIXED_ALTITUDE, 1);
+
+  Serial.print("Traccar URL: ");
+  Serial.println(url);
 
   if (!http.begin(traccarClient, url)) {
     Serial.println("Traccar: falha ao iniciar requisicao HTTP");
@@ -81,6 +91,47 @@ void setupWiFi() {
   Serial.println(WiFi.localIP());
 }
 
+void ensureWiFiConnected() {
+  if (WiFi.status() == WL_CONNECTED) {
+    return;
+  }
+
+  Serial.println("Wi-Fi desconectado! Reconectando...");
+  WiFi.disconnect();
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  unsigned long start = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - start < 10000) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("\nWi-Fi reconectado! IP: ");
+    Serial.println(WiFi.localIP());
+  } else {
+    Serial.println("\nFalha ao reconectar Wi-Fi.");
+  }
+}
+
+void syncTime() {
+  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+
+  time_t epochTime = time(nullptr);
+  unsigned long start = millis();
+  while (epochTime < 1000000000 && millis() - start < 10000) {
+    delay(500);
+    epochTime = time(nullptr);
+  }
+
+  if (epochTime > 1000000000) {
+    Serial.print("Data/hora sincronizada: ");
+    Serial.println((unsigned long)epochTime);
+  } else {
+    Serial.println("Nao foi possivel sincronizar a data/hora.");
+  }
+}
+
 // Funcao executada automaticamente sempre que chega uma mensagem MQTT
 void callback(char* topic, byte* payload, unsigned int length) {
   String message = "";
@@ -106,6 +157,14 @@ void callback(char* topic, byte* payload, unsigned int length) {
 // Reconecta ao Broker MQTT caso a conexao caia
 void reconnectMQTT() {
   while (!client.connected()) {
+    if (WiFi.status() != WL_CONNECTED) {
+      ensureWiFiConnected();
+      if (WiFi.status() != WL_CONNECTED) {
+        delay(3000);
+        continue;
+      }
+    }
+
     Serial.print("Conectando ao Broker MQTT...");
     String clientId = "ESP8266_RecifeLabs_" + deviceId;
 
@@ -131,6 +190,7 @@ void setup() {
 
   Serial.begin(115200);
   setupWiFi();
+  syncTime();
 
   deviceId = WiFi.macAddress();
   deviceId.replace(":", "");
@@ -140,9 +200,13 @@ void setup() {
 
   client.setServer(MQTT_BROKER, MQTT_PORT);
   client.setCallback(callback);
+  client.setKeepAlive(60);
+  client.setSocketTimeout(15);
 }
 
 void loop() {
+  ensureWiFiConnected();
+
   if (!client.connected()) {
     reconnectMQTT();
   }
