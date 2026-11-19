@@ -139,7 +139,7 @@
       background: #64748b;
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
-    .status-dot.online {
+    .status-dot.led-on {
       background: #22c55e;
       box-shadow: 0 0 12px #22c55e;
     }
@@ -253,6 +253,7 @@
             if (getSelectedDeviceType() === ledDeviceType[0]) {
               ledState = ledStates.get(ledDeviceType[0]) || false;
             }
+            updateDeviceList();
             updateUI();
           } catch (error) {
             console.warn('Estado do LED inválido:', error);
@@ -397,8 +398,8 @@
 
         const dot = document.createElement('span');
         dot.className = 'status-dot';
-        if (device.status === 'online') {
-          dot.classList.add('online');
+        if (device.status === 'online' && ledStates.get(device.deviceType)) {
+          dot.classList.add('led-on');
         }
 
         const info = document.createElement('div');
