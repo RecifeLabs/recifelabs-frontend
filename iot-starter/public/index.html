@@ -282,6 +282,7 @@
             deviceType,
             deviceId,
             status: deviceStatus,
+            traccarConnected: deviceStatus === 'online' && payload.traccarConnected === true,
             lastSignal: Date.now()
           });
           updateDeviceList();
@@ -413,7 +414,10 @@
 
         const meta = document.createElement('span');
         meta.className = 'device-meta';
-        meta.innerText = device.status === 'online' ? 'Conectado' : 'Desconectado';
+        const traccarStatus = device.status === 'online' && device.traccarConnected
+          ? 'Conectado'
+          : 'Desconectado';
+        meta.innerText = `${device.status === 'online' ? 'Conectado' : 'Desconectado'} · Traccar: ${traccarStatus}`;
 
         const radio = document.createElement('input');
         radio.className = 'device-radio';

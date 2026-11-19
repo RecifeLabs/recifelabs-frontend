@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <HTTPClient.h>
 #include <PubSubClient.h> // Instale via Library Manager: "PubSubClient" de Nick O'Leary
 
 // --- CONFIGURAÇÕES DE REDE E BROKER ---
@@ -10,6 +11,11 @@ const int   MQTT_PORT     = 1883; // Porta TCP padrão para microcontroladores
 const char* MQTT_TOPIC    = "recifelabs/iot/esp32/led";
 const char* MQTT_STATUS_TOPIC_BASE = "recifelabs/iot/esp32/status/";
 const unsigned long HEARTBEAT_INTERVAL = 5000;
+const char* TRACCAR_SERVER_URL = "https://demo.traccar.org:5055/";
+const float FIXED_LATITUDE = -8.0476;
+const float FIXED_LONGITUDE = -34.8770;
+const float FIXED_SPEED = 0.0;
+const float FIXED_ALTITUDE = 0.0;
 
 // Pino D2 (GPIO 2) - LED interno da placa ESP32
 const int LED_PIN = 2;
@@ -19,11 +25,36 @@ PubSubClient client(espClient);
 String deviceId;
 String statusTopic;
 unsigned long lastHeartbeat = 0;
+bool traccarConnected = false;
 
 void publishPresence(const char* status, bool retained) {
   String payload = "{\"deviceId\":\"" + deviceId + "\",\"status\":\"" + status +
-                   "\",\"timestamp\":" + String(millis()) + "}";
+                   "\",\"traccarConnected\":" + String(traccarConnected ? "true" : "false") +
+                   ",\"timestamp\":" + String(millis()) + "}";
   client.publish(statusTopic.c_str(), payload.c_str(), retained);
+}
+
+bool sendLocationToTraccar() {
+  if (TRACCAR_SERVER_URL[0] == '\0') {
+    return false;
+  }
+
+  WiFiClient traccarClient;
+  HTTPClient http;
+  String url = String(TRACCAR_SERVER_URL) +
+               "?id=" + deviceId +
+               "&lat=" + String(FIXED_LATITUDE, 6) +
+               "&lon=" + String(FIXED_LONGITUDE, 6) +
+               "&speed=" + String(FIXED_SPEED, 1) +
+               "&altitude=" + String(FIXED_ALTITUDE, 1);
+
+  if (!http.begin(traccarClient, url)) {
+    return false;
+  }
+
+  int responseCode = http.GET();
+  http.end();
+  return responseCode >= 200 && responseCode < 300;
 }
 
 // Conecta ao Wi-Fi
@@ -112,6 +143,7 @@ void loop() {
   client.loop(); // Mantém a conexão MQTT ativa e escutando mensagens
 
   if (millis() - lastHeartbeat >= HEARTBEAT_INTERVAL) {
+    traccarConnected = sendLocationToTraccar();
     publishPresence("online", false);
     lastHeartbeat = millis();
   }
