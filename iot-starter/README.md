@@ -126,6 +126,22 @@ Os comandos publicados pelo botão têm este formato:
 O último comando do LED é publicado com `retain=true`, permitindo que novos
 clientes recebam o estado mais recente.
 
+## Protocolo OsmAnd do Traccar
+
+Os dois firmwares (`arduino-ide/sketch_curso-iot-start.ino` e
+`arduino-ide/sketch_curso-iot-start-esp8266.ino`) enviam uma posição fixa para
+o endpoint OsmAnd do Traccar. O identificador enviado no parâmetro `id` é o MAC
+da placa sem os dois-pontos:
+
+```text
+http://TRACCAR_HOST:5055/?id=AABBCCDDEEFF&lat=-8.047600&lon=-34.877000&speed=0.0&altitude=0.0
+```
+
+Antes de gravar o firmware, configure `TRACCAR_SERVER_URL` com o endereço do
+Traccar e ajuste `FIXED_LATITUDE` e `FIXED_LONGITUDE` se necessário. A cada
+heartbeat, a placa publica `traccarConnected: true` quando recebe uma resposta
+HTTP de sucesso do Traccar. O frontend exibe esse estado em cada dispositivo.
+
 ## API do servidor
 
 ### `GET /api/network-info`
