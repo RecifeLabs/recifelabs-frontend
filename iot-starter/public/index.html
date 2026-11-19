@@ -425,6 +425,13 @@
           ledState = ledStates.get(getSelectedDeviceType()) || false;
           updateDeviceList();
         });
+        item.addEventListener('click', event => {
+          if (event.target === radio || radio.checked) {
+            return;
+          }
+          radio.checked = true;
+          radio.dispatchEvent(new Event('change'));
+        });
 
         info.appendChild(name);
         info.appendChild(meta);
