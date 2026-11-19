@@ -2,16 +2,16 @@
 #include <HTTPClient.h>
 #include <PubSubClient.h> // Instale via Library Manager: "PubSubClient" de Nick O'Leary
 
-// --- CONFIGURAÇÕES DE REDE E BROKER ---
+// --- CONFIGURACOES DE REDE E BROKER ---
 const char* WIFI_SSID     = "SSID";
 const char* WIFI_PASSWORD = "WIFIPASS";
 
 const char* MQTT_BROKER   = "broker.emqx.io";
-const int   MQTT_PORT     = 1883; // Porta TCP padrão para microcontroladores
+const int   MQTT_PORT     = 1883;
 const char* MQTT_TOPIC    = "recifelabs/iot/esp32/led";
 const char* MQTT_STATUS_TOPIC_BASE = "recifelabs/iot/esp32/status/";
 const unsigned long HEARTBEAT_INTERVAL = 5000;
-const char* TRACCAR_SERVER_URL = "https://demo.traccar.org:5055/";
+const char* TRACCAR_SERVER_URL = "http://demo.traccar.org:5055/";
 const float FIXED_LATITUDE = -8.0476;
 const float FIXED_LONGITUDE = -34.8770;
 const float FIXED_SPEED = 0.0;
@@ -36,6 +36,7 @@ void publishPresence(const char* status, bool retained) {
 
 bool sendLocationToTraccar() {
   if (TRACCAR_SERVER_URL[0] == '\0') {
+    Serial.println("Traccar: TRACCAR_SERVER_URL nao configurada");
     return false;
   }
 
@@ -49,10 +50,14 @@ bool sendLocationToTraccar() {
                "&altitude=" + String(FIXED_ALTITUDE, 1);
 
   if (!http.begin(traccarClient, url)) {
+    Serial.println("Traccar: falha ao iniciar requisicao HTTP");
     return false;
   }
 
+  http.setTimeout(5000);
   int responseCode = http.GET();
+  Serial.print("Traccar: HTTP ");
+  Serial.println(responseCode);
   http.end();
   return responseCode >= 200 && responseCode < 300;
 }
@@ -75,7 +80,7 @@ void setupWiFi() {
   Serial.println(WiFi.localIP());
 }
 
-// Função executada automaticamente sempre que chega uma mensagem MQTT
+// Funcao executada automaticamente sempre que chega uma mensagem MQTT
 void callback(char* topic, byte* payload, unsigned int length) {
   String message = "";
   for (unsigned int i = 0; i < length; i++) {
@@ -97,7 +102,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 }
 
-// Reconecta ao Broker MQTT caso a conexão caia
+// Reconecta ao Broker MQTT caso a conexao caia
 void reconnectMQTT() {
   while (!client.connected()) {
     Serial.print("Conectando ao Broker MQTT...");
@@ -106,7 +111,7 @@ void reconnectMQTT() {
     if (client.connect(clientId.c_str(), statusTopic.c_str(), 0, true,
                        "{\"status\":\"offline\"}")) {
       Serial.println("Conectado!");
-      // Assina o tópico para escutar os comandos vindos do navegador
+      // Assina o topico para escutar os comandos vindos do navegador
       client.subscribe(MQTT_TOPIC);
       publishPresence("online", true);
       lastHeartbeat = millis();
@@ -140,7 +145,7 @@ void loop() {
   if (!client.connected()) {
     reconnectMQTT();
   }
-  client.loop(); // Mantém a conexão MQTT ativa e escutando mensagens
+  client.loop(); // Mantem a conexao MQTT ativa e escutando mensagens
 
   if (millis() - lastHeartbeat >= HEARTBEAT_INTERVAL) {
     traccarConnected = sendLocationToTraccar();

@@ -11,7 +11,7 @@ const int   MQTT_PORT     = 1883;
 const char* MQTT_TOPIC    = "recifelabs/iot/esp8266/led";
 const char* MQTT_STATUS_TOPIC_BASE = "recifelabs/iot/esp8266/status/";
 const unsigned long HEARTBEAT_INTERVAL = 5000;
-const char* TRACCAR_SERVER_URL = ""; // Ex.: http://192.168.1.100:5055/
+const char* TRACCAR_SERVER_URL = "http://demo.traccar.org:5055/";
 const float FIXED_LATITUDE = -8.0476;
 const float FIXED_LONGITUDE = -34.8770;
 const float FIXED_SPEED = 0.0;
@@ -37,6 +37,7 @@ void publishPresence(const char* status, bool retained) {
 
 bool sendLocationToTraccar() {
   if (TRACCAR_SERVER_URL[0] == '\0') {
+    Serial.println("Traccar: TRACCAR_SERVER_URL nao configurada");
     return false;
   }
 
@@ -50,10 +51,14 @@ bool sendLocationToTraccar() {
                "&altitude=" + String(FIXED_ALTITUDE, 1);
 
   if (!http.begin(traccarClient, url)) {
+    Serial.println("Traccar: falha ao iniciar requisicao HTTP");
     return false;
   }
 
+  http.setTimeout(5000);
   int responseCode = http.GET();
+  Serial.print("Traccar: HTTP ");
+  Serial.println(responseCode);
   http.end();
   return responseCode >= 200 && responseCode < 300;
 }
