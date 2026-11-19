@@ -4,8 +4,8 @@ const path = require('path');
 const app = express();
 const PORT = 8000;
 const MQTT_BROKER_URL = process.env.MQTT_BROKER_URL || 'wss://broker.emqx.io:8084/mqtt';
-const MQTT_TOPIC = process.env.MQTT_TOPIC || 'recifelabs/iot/esp32/led';
-const MQTT_STATUS_TOPIC = process.env.MQTT_STATUS_TOPIC || 'recifelabs/iot/esp32/status/#';
+const MQTT_TOPIC = process.env.MQTT_TOPIC || 'recifelabs/iot/esp8266/led';
+const MQTT_STATUS_TOPIC = process.env.MQTT_STATUS_TOPIC || 'recifelabs/iot/+/status/#';
 const configuredDeviceSignalTimeout = Number(process.env.DEVICE_SIGNAL_TIMEOUT);
 const DEVICE_SIGNAL_TIMEOUT = Number.isFinite(configuredDeviceSignalTimeout) &&
   configuredDeviceSignalTimeout > 0
@@ -22,6 +22,16 @@ app.get('/api/network-info', (req, res) => {
     broker: MQTT_BROKER_URL,
     topic: MQTT_TOPIC,
     statusTopic: MQTT_STATUS_TOPIC,
+    deviceTopics: {
+      esp32: {
+        led: 'recifelabs/iot/esp32/led',
+        status: 'recifelabs/iot/esp32/status/#'
+      },
+      esp8266: {
+        led: 'recifelabs/iot/esp8266/led',
+        status: 'recifelabs/iot/esp8266/status/#'
+      }
+    },
     deviceSignalTimeout: DEVICE_SIGNAL_TIMEOUT
   });
 });

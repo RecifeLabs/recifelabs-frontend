@@ -81,8 +81,10 @@ Configuração padrão:
 |---|---|
 | Broker MQTT do ESP32 | `broker.emqx.io:1883` |
 | Broker MQTT do navegador | `wss://broker.emqx.io:8084/mqtt` |
-| Comandos do LED | `recifelabs/iot/esp32/led` |
-| Presença | `recifelabs/iot/esp32/status/<MAC>` |
+| Comandos do LED ESP32 | `recifelabs/iot/esp32/led` |
+| Presença do ESP32 | `recifelabs/iot/esp32/status/<MAC>` |
+| Comandos do LED ESP8266 | `recifelabs/iot/esp8266/led` |
+| Presença do ESP8266 | `recifelabs/iot/esp8266/status/<MAC>` |
 | Intervalo do heartbeat | 5 segundos |
 | Timeout no frontend | 15 segundos |
 
@@ -105,9 +107,11 @@ Exemplo de presença online:
 }
 ```
 
-O frontend assina `recifelabs/iot/esp32/status/#`. Ao receber um sinal online,
-exibe o MAC e acende a bolinha verde. Se nenhum sinal chegar por 15 segundos,
-exibe o dispositivo como desconectado.
+O frontend assina `recifelabs/iot/+/status/#`. Ao receber um sinal online,
+identifica o tipo pela primeira parte do tópico (ESP32 ou ESP8266), exibe o MAC
+e acende a bolinha verde. Cada dispositivo aparece em uma lista separada e pode
+ser selecionado para envio de comandos ao tópico correspondente. Se nenhum
+sinal chegar por 15 segundos, o dispositivo é exibido como desconectado.
 
 Os comandos publicados pelo botão têm este formato:
 
@@ -132,8 +136,18 @@ Retorna a URL pública da aplicação e a configuração consumida pelo frontend
 {
   "url": "https://start.labs.recife.br",
   "broker": "wss://broker.emqx.io:8084/mqtt",
-  "topic": "recifelabs/iot/esp32/led",
-  "statusTopic": "recifelabs/iot/esp32/status/#",
+  "topic": "recifelabs/iot/esp8266/led",
+  "statusTopic": "recifelabs/iot/+/status/#",
+  "deviceTopics": {
+    "esp32": {
+      "led": "recifelabs/iot/esp32/led",
+      "status": "recifelabs/iot/esp32/status/#"
+    },
+    "esp8266": {
+      "led": "recifelabs/iot/esp8266/led",
+      "status": "recifelabs/iot/esp8266/status/#"
+    }
+  },
   "deviceSignalTimeout": 15000
 }
 ```
@@ -145,8 +159,8 @@ ambiente do servidor:
 ```bash
 PUBLIC_URL=https://start.labs.recife.br
 MQTT_BROKER_URL=wss://broker.emqx.io:8084/mqtt
-MQTT_TOPIC=recifelabs/iot/esp32/led
-MQTT_STATUS_TOPIC=recifelabs/iot/esp32/status/#
+MQTT_TOPIC=recifelabs/iot/esp8266/led
+MQTT_STATUS_TOPIC=recifelabs/iot/+/status/#
 DEVICE_SIGNAL_TIMEOUT=15000
 npm start
 ```
